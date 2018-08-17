@@ -17,6 +17,7 @@ import retrofit2.http.Query;
 
 public interface ApiServices {
 
+    // ---------------------------------------------------------------------------------------------
     // Full API URL for TOP STORIES
     // https://api.nytimes.com/svc/topstories/v2/home.json?api-key=4e57ca5e25324139ab64c95a50c25ef8
 
@@ -25,28 +26,31 @@ public interface ApiServices {
 
     // Full API URL for ARTICLE SEARCH
     // https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=4e57ca5e25324139ab64c95a50c25ef8&q=sport
+    // ---------------------------------------------------------------------------------------------
 
 
+    // API Request for "Top Stories" tab
     @GET("svc/topstories/v2/home.json")
         Observable<TopStories> getTopStories(@Query("api-key") String apiKey);
 
-    // TODO MostPopular
+    // API Request for "Most Popular" tab
     @GET("svc/mostpopular/v2/mostemailed/all-sections/30.json")
         Observable<MostPopular> getMostPopular(@Query("api-key") String apiKey);
 
-
+    // API Request for "Business" tab
     @GET("svc/search/v2/articlesearch.json?api-key=4e57ca5e25324139ab64c95a50c25ef8&q=sports")
         Observable<ArticleSearch> getArticleSearch();
 
+    // API Request for "SearchActivity" and "NewsListActivity"
     @GET("svc/search/v2/articlesearch.json")
         Observable<ArticleSearch> getAllSearchedArticles(@Query("q") String query, @Query("api-key") String apiKey);
 
 
+    // Retrofit builder with New York Times base URL
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("https://api.nytimes.com/")
             .addConverterFactory(GsonConverterFactory.create(
                     new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build();
-
 }
