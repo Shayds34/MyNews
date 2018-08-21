@@ -7,15 +7,15 @@
         <item
             android:id="@+id/nav_top_stories"
             android:icon="@drawable/ic_top_stories_black_24dp"
-            android:title="Top Stories" />
+            android:title="@string/top_stories" />
         <item
             android:id="@+id/nav_most_popular"
             android:icon="@drawable/ic_most_popular_black_24dp"
-            android:title="Most Popular" />
+            android:title="@string/most_popular" />
         <item
-            android:id="@+id/nav_business"
-            android:icon="@drawable/ic_business_black_24dp"
-            android:title="Business" />
+            android:id="@+id/nav_arts"
+            android:icon="@drawable/ic_format_paint_black_24dp"
+            android:title="@string/art_and_design" />
         <item
             android:id="@+id/nav_search"
             android:icon="@drawable/ic_search_black_24dp"

@@ -11,19 +11,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
-
 import com.example.theshayds.mynewstest.Models.ArticleSearch;
 import com.example.theshayds.mynewstest.Models.NYTimesNews;
-import com.example.theshayds.mynewstest.Models.TopStories;
 import com.example.theshayds.mynewstest.R;
 import com.example.theshayds.mynewstest.Utils.ApiStreams;
 import com.example.theshayds.mynewstest.Utils.NetworkStatus;
 import com.example.theshayds.mynewstest.Views.ArticleAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
@@ -64,7 +59,7 @@ public class NewsListActivity extends AppCompatActivity{
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        // Setup RecyvlerView
+        // Setup RecyclerView
         this.configureRecyclerView();
 
 
@@ -79,7 +74,7 @@ public class NewsListActivity extends AppCompatActivity{
 
     // Create Subscriber for Article Search with all parameters
     private void retrofitRequestArticleSearch( ){
-        // Get parameters from getExtras() to search articles
+        // Get parameters from getStringExtra() to search articles
         Intent mIntent = getIntent();
         final String mQuery = mIntent.getStringExtra("query");
 
@@ -119,8 +114,9 @@ public class NewsListActivity extends AppCompatActivity{
             // TODO Date Format
             news.setPublishedDate(mResult.getPubDate());
 
+            // Add static url to complete image url path
             if (mResult.getMultimedia().size() != 0){
-                news.setImageURL(mResult.getMultimedia().get(0).getUrl());
+                news.setImageURL("https://static01.nyt.com/" + mResult.getMultimedia().get(0).getUrl());
             }
             nyTimesNewsList.add(news);
         }

@@ -114,8 +114,9 @@ public class ArticleSearchFragment extends Fragment {
             // TODO Date Format
             news.setPublishedDate(mResult.getPubDate());
 
+            // Add static url to complete image url path
             if (mResult.getMultimedia().size() != 0){
-                news.setImageURL(mResult.getMultimedia().get(0).getUrl());
+                news.setImageURL("https://static01.nyt.com/" + mResult.getMultimedia().get(0).getUrl());
             }
             nyTimesNewsList.add(news);
         }

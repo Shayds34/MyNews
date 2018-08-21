@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                             }
 
-                            case R.id.nav_business :{
+                            case R.id.nav_arts :{
                                 mViewPager.setCurrentItem(2);
                                 break;
                             }
@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mPagerAdapter.addFragment(new TopStoriesFragment(), "TOP STORIES");
         mPagerAdapter.addFragment(new MostPopularFragment(), "MOST POPULAR");
-        mPagerAdapter.addFragment(new ArticleSearchFragment(), "BUSINESS");
+        mPagerAdapter.addFragment(new ArticleSearchFragment(), "Art & Design");
         viewPager.setAdapter(mPagerAdapter);
     }
 }

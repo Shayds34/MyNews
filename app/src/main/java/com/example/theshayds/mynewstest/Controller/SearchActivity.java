@@ -81,9 +81,6 @@ public class SearchActivity extends AppCompatActivity {
                 // Separate queries with "&" symbol
                 String result = TextUtils.join("&", mQueries);
 
-                // TODO Remove TEST.ONLY
-                Toast.makeText(SearchActivity.this, result, Toast.LENGTH_SHORT).show();
-
                 Intent mIntent = new Intent(SearchActivity.this, NewsListActivity.class);
                 mIntent.putExtra("query", result);
                 startActivity(mIntent);
@@ -93,9 +90,9 @@ public class SearchActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // handle arrow click here
+        // Handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            finish(); // close this activity and return to preview activity (if there is any)
+            finish(); // Close this activity and return to previous activity (if there is any)
         }
         return super.onOptionsItemSelected(item);
     }
