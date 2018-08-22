@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 
 import com.example.theshayds.mynewstest.Models.MostPopular;
 import com.example.theshayds.mynewstest.Models.NYTimesNews;
-import com.example.theshayds.mynewstest.Models.TopStories;
 import com.example.theshayds.mynewstest.R;
 import com.example.theshayds.mynewstest.Utils.ApiStreams;
+import com.example.theshayds.mynewstest.Utils.ArticleAdapter;
 import com.example.theshayds.mynewstest.Utils.NetworkStatus;
 
 import java.util.ArrayList;

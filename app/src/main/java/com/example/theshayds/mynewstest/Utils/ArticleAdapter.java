@@ -1,4 +1,4 @@
-package com.example.theshayds.mynewstest.Views;
+package com.example.theshayds.mynewstest.Utils;
 
 import android.content.Context;
 import android.content.Intent;

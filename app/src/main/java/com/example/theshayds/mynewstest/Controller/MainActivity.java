@@ -22,7 +22,7 @@ import com.example.theshayds.mynewstest.R;
 import com.example.theshayds.mynewstest.Views.ArticleSearchFragment;
 import com.example.theshayds.mynewstest.Views.MostPopularFragment;
 import com.example.theshayds.mynewstest.Views.TopStoriesFragment;
-import com.example.theshayds.mynewstest.Views.ViewPagerAdapter;
+import com.example.theshayds.mynewstest.Utils.ViewPagerAdapter;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {

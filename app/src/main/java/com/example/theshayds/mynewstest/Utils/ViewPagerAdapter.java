@@ -1,4 +1,4 @@
-package com.example.theshayds.mynewstest.Views;
+package com.example.theshayds.mynewstest.Utils;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

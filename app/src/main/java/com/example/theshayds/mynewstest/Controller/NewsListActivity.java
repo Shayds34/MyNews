@@ -16,7 +16,7 @@ import com.example.theshayds.mynewstest.Models.NYTimesNews;
 import com.example.theshayds.mynewstest.R;
 import com.example.theshayds.mynewstest.Utils.ApiStreams;
 import com.example.theshayds.mynewstest.Utils.NetworkStatus;
-import com.example.theshayds.mynewstest.Views.ArticleAdapter;
+import com.example.theshayds.mynewstest.Utils.ArticleAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import io.reactivex.disposables.Disposable;

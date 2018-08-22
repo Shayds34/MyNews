@@ -3,7 +3,6 @@ package com.example.theshayds.mynewstest.Views;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,12 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.theshayds.mynewstest.Controller.MainActivity;
-import com.example.theshayds.mynewstest.Models.MostPopular;
 import com.example.theshayds.mynewstest.Models.NYTimesNews;
 import com.example.theshayds.mynewstest.Models.TopStories;
 import com.example.theshayds.mynewstest.R;
 import com.example.theshayds.mynewstest.Utils.ApiStreams;
+import com.example.theshayds.mynewstest.Utils.ArticleAdapter;
 import com.example.theshayds.mynewstest.Utils.NetworkStatus;
 
 import java.util.ArrayList;
