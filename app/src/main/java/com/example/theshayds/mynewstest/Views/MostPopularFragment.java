@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.theshayds.mynewstest.Models.MostPopular;
 import com.example.theshayds.mynewstest.Models.NYTimesNews;
@@ -32,6 +33,7 @@ public class MostPopularFragment extends Fragment {
     private View mView;
 
     // Use For Design UI
+    ProgressBar mProgressBar;
     RecyclerView mRecyclerView;
     ArticleAdapter adapter;
 
@@ -64,7 +66,7 @@ public class MostPopularFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_article, container, false);
-
+        mProgressBar = mView.findViewById(R.id.progress_bar);
         this.configureRecyclerView();
 
         // Checking Network Status
@@ -95,6 +97,7 @@ public class MostPopularFragment extends Fragment {
             @Override
             public void onComplete() {
                 Log.e("TAG", "ON COMPLETE");
+                mProgressBar.setVisibility(View.GONE);
             }
         });
     }
