@@ -23,11 +23,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Search query term"
-        android:padding="20dp" />
 
     <include
         layout="@layout/menu_checkboxes"/>

@@ -3,6 +3,13 @@
     android:layout_width="match_parent" android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <EditText
+        android:id="@+id/search_query_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search query term"
+        android:padding="20dp" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
