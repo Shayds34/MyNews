@@ -52,7 +52,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
             @Override
             public void onClick(View v) {
                 Log.e(TAG, "position " + mViewHolder.getAdapterPosition());
-                Toast.makeText(mContext, "URL: " + nyTimesNewsList.get(mViewHolder.getAdapterPosition()).getUrl(), Toast.LENGTH_SHORT).show();
 
                 Intent mIntent = new Intent(v.getContext(), ArticleActivity.class);
                 mIntent.putExtra("URL", nyTimesNewsList.get(mViewHolder.getAdapterPosition()).getUrl());
