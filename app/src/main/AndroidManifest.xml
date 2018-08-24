@@ -23,6 +23,7 @@
         <activity android:name=".Controller.NotificationsActivity" />
         <activity android:name=".Controller.SearchActivity" />
         <activity android:name=".Controller.NewsListActivity" />
+        <receiver android:name=".Utils.AlarmReceiver"/>
     </application>
 
 </manifest>
