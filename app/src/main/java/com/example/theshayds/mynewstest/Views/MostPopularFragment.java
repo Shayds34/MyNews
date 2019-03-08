@@ -17,9 +17,12 @@ import com.example.theshayds.mynewstest.Models.NYTimesNews;
 import com.example.theshayds.mynewstest.R;
 import com.example.theshayds.mynewstest.Utils.ApiStreams;
 import com.example.theshayds.mynewstest.Utils.ArticleAdapter;
+import com.example.theshayds.mynewstest.Utils.DateServices;
 import com.example.theshayds.mynewstest.Utils.NetworkStatus;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
@@ -57,10 +60,7 @@ public class MostPopularFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-    }
+        super.onCreate(savedInstanceState);    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,6 +71,7 @@ public class MostPopularFragment extends Fragment {
 
         // Checking Network Status
         if (NetworkStatus.getInstance(mView.getContext()).isOnline()) {
+            nyTimesNewsList.clear();
             this.retrofitRequestMostPopular();
         } else {
             Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.drawer_layout), "There is no Internet connexion available...", Snackbar.LENGTH_LONG);
@@ -114,13 +115,24 @@ public class MostPopularFragment extends Fragment {
             news.setSection(mResult.getSection());
             news.setUrl(mResult.getUrl());
 
-            // TODO Date Format
-            news.setPublishedDate(mResult.getPublishedDate());
+            // Date Format
+            String outputText = DateServices.dateFormatBis(mResult.getPublishedDate());
+            news.setPublishedDate(outputText);
 
+            // Create Thumbnail
             if (mResult.getMedia().size() != 0){
                 news.setImageURL(mResult.getMedia().get(0).getMediaMetadata().get(0).getUrl());
             }
-            //TODO Sort list
+            nyTimesNewsList.add(news);
+
+            // Sort list
+            Collections.sort(nyTimesNewsList, new Comparator<NYTimesNews>() {
+                @Override
+                public int compare(NYTimesNews o1, NYTimesNews o2) {
+                    return o1.getPublishedDate().compareTo(o2.getPublishedDate());
+                }
+            });
+            Collections.reverse(nyTimesNewsList);
             nyTimesNewsList.add(news);
         }
     }

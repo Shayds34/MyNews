@@ -1,12 +1,9 @@
 package com.example.theshayds.mynewstest.Utils;
 
-import com.example.theshayds.mynewstest.Controller.ArticleActivity;
 import com.example.theshayds.mynewstest.Models.ArticleSearch;
 import com.example.theshayds.mynewstest.Models.MostPopular;
 import com.example.theshayds.mynewstest.Models.TopStories;
 
-import java.sql.Time;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -15,7 +12,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ApiStreams {
 
-    private static final String API_KEY = "4e57ca5e25324139ab64c95a50c25ef8";
+    private static final String API_KEY = "6sY6IUCABxIDivZZqpoyO2VSwA6oJxOO";
     public static final String Q_STRING = "sport";
 
     public static Observable<TopStories> streamTopStories(){

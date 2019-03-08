@@ -1,6 +1,7 @@
 package com.example.theshayds.mynewstest.Controller;
 
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -31,10 +32,10 @@ import io.reactivex.observers.DisposableObserver;
 public class NotificationsActivity extends AppCompatActivity {
 
     private Disposable disposable;
-    EditText mSearchTerm;
-    CheckBox mArts, mEntrepreneurs, mBusiness, mPolitics, mTravel, mSports;
-    Switch mNotificationSwitch;
-    SharedPreferences sharedPreferences;
+    private EditText mSearchTerm;
+    private CheckBox mArts, mEntrepreneurs, mBusiness, mPolitics, mTravel, mSports;
+    private Switch mNotificationSwitch;
+    private SharedPreferences sharedPreferences;
 
 
     private static final String PREF_LAST_QUERY_ID = "lastQueryId";
@@ -114,13 +115,18 @@ public class NotificationsActivity extends AppCompatActivity {
                         @Override
                         public void onNext(ArticleSearch articleSearch) {
                             String lastQueryId = articleSearch.getResponse().getDocs().get(0).getSnippet();
+                            String lastQueryURL = articleSearch.getResponse().getDocs().get(0).getWebUrl();
+
                             setLastQueryResultId(getApplicationContext(), lastQueryId);
+                            setLastQueryResultURL(getApplicationContext(), lastQueryURL);
 
                             int mNotificationID = 1;
                             // Set NotificationID and Text
                             Intent mIntent = new Intent(NotificationsActivity.this, AlarmReceiver.class);
                             mIntent.putExtra("NotificationID", mNotificationID);
                             mIntent.putExtra("Title", "MyNews");
+                            // TODO
+                            mIntent.putExtra("URL", "");
                             mIntent.putExtra("Content", "De nouveaux articles sont disponibles.");
 
                             Calendar mStartTime = Calendar.getInstance();
@@ -131,7 +137,7 @@ public class NotificationsActivity extends AppCompatActivity {
                             AlarmManager mAlarm = (AlarmManager) getSystemService(ALARM_SERVICE);
 
                             if (mAlarm != null) {
-                                mAlarm.set(AlarmManager.RTC_WAKEUP, mStartTime.getTimeInMillis() + 10000, mAlarmIntent);
+                                mAlarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, mStartTime.getTimeInMillis(), 10000, mAlarmIntent);
                             }
                             Toast.makeText(getApplicationContext(), lastQueryId, Toast.LENGTH_SHORT).show();
                         }
@@ -148,8 +154,9 @@ public class NotificationsActivity extends AppCompatActivity {
                     SharedPreferences.Editor mEditor = getSharedPreferences("toggle_state", MODE_PRIVATE).edit();
                     mEditor.putBoolean("State", false);
                     mEditor.apply();
-
                     // TODO : Cancel AlarmReceiver
+                    NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    mNotificationManager.cancel(getIntent().getExtras().getInt("NotificationID"));
                 }
             }
         });
@@ -164,12 +171,24 @@ public class NotificationsActivity extends AppCompatActivity {
                 .apply();
     }
 
+    // Save LastQueryURL = URL
+    public static void setLastQueryResultURL(Context context, String lastQueryId){
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putString("URL", lastQueryId)
+                .apply();
+    }
+
     public String getLastQueryResultId(Context context){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPref.getString(PREF_LAST_QUERY_ID, "");
 
     }
 
+    public String getLastQueryResultURL(Context context) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPref.getString("URL", "");
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

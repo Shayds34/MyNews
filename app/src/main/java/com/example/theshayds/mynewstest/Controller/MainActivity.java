@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -13,26 +14,26 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
 import com.example.theshayds.mynewstest.R;
+import com.example.theshayds.mynewstest.R.id;
+import com.example.theshayds.mynewstest.Utils.ViewPagerAdapter;
 import com.example.theshayds.mynewstest.Views.ArticleSearchFragment;
 import com.example.theshayds.mynewstest.Views.MostPopularFragment;
 import com.example.theshayds.mynewstest.Views.TopStoriesFragment;
-import com.example.theshayds.mynewstest.Utils.ViewPagerAdapter;
+
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Toolbar mToolbar;
-    private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
-    Dialog mDialog;
+    private Dialog mDialog;
 
 
     @Override
@@ -44,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
         mDialog = new Dialog(this);
 
         // Create toolbar
-        mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+        Toolbar mMToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mMToolbar);
         final ActionBar mActionBar = getSupportActionBar();
 
         // Create NavigationDrawer
@@ -64,62 +65,56 @@ public class MainActivity extends AppCompatActivity {
         setupViewPager(mViewPager);
 
         // Create and setup TabLayout with viewPager
-        mTabLayout = findViewById(R.id.tabs);
-        mTabLayout.setupWithViewPager(mViewPager);
+        TabLayout mMTabLayout = findViewById(R.id.tabs);
+        mMTabLayout.setupWithViewPager(mViewPager);
 
         // NavigationDrawer multiple events
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         // Set item as selected to persist highlight
-                        // menuItem.setChecked(true);
 
-                        switch (menuItem.getItemId()) {
+                        switch (item.getItemId()) {
 
-                            case R.id.nav_top_stories :{
+                            case id.nav_top_stories :{
                                 mViewPager.setCurrentItem(0);
                                 break;
                                 }
 
-                            case R.id.nav_most_popular :{
+                            case id.nav_most_popular :{
                                 mViewPager.setCurrentItem(1);
                                 break;
                             }
 
-                            case R.id.nav_arts :{
+                            case id.nav_arts :{
                                 mViewPager.setCurrentItem(2);
                                 break;
                             }
-                            case R.id.nav_search :{
+                            case id.nav_search :{
                                 Intent mIntent = new Intent(MainActivity.this, SearchActivity.class);
                                 startActivity(mIntent);
                                 break;
                             }
 
-                            case R.id.nav_notifications :{
+                            case id.nav_notifications :{
                                 Intent mIntent = new Intent(MainActivity.this, NotificationsActivity.class);
                                 startActivity(mIntent);
                                 break;
                             }
 
-                            case R.id.nav_help :{
+                            case id.nav_help :{
                                 showHelpPopup();
                                 break;
                             }
-                            case R.id.nav_about :{
+                            case id.nav_about :{
                                 showAboutPopup();
                                 break;
                             }
                         }
-
-                        // close drawer when item is tapped
+                        // Close drawer when item is tapped
                         mDrawerLayout.closeDrawers();
-
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
-
                         return true;
                     }
                 });
@@ -161,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
         mDialog.show();
     }
 
-
     // Close navigationDrawer when back button is pressed
     @Override
     public void onBackPressed() {
@@ -172,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-
 
     // Create Option Menu in ToolBar
     @Override
@@ -218,12 +211,12 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager(ViewPager viewPager) {
         // Setup the ViewPager with multiple fragment
         ViewPagerAdapter mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mPagerAdapter.addFragment(new TopStoriesFragment(), "TOP STORIES");
         mPagerAdapter.addFragment(new MostPopularFragment(), "MOST POPULAR");
-        mPagerAdapter.addFragment(new ArticleSearchFragment(), "Art & Design");
+        mPagerAdapter.addFragment(new ArticleSearchFragment(), "ARTS");
         viewPager.setAdapter(mPagerAdapter);
     }
 }

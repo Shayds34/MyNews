@@ -17,4 +17,7 @@
     <string name="about_txt">This application was created as part of an OpenClassrooms learning project.</string>
     <string name="openclassrooms">OpenClassrooms</string>
     <string name="art_and_design"><![CDATA[Art & Design]]></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

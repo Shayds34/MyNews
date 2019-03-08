@@ -1,6 +1,7 @@
 package com.example.theshayds.mynewstest.Views;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -17,10 +18,14 @@ import com.example.theshayds.mynewstest.Models.TopStories;
 import com.example.theshayds.mynewstest.R;
 import com.example.theshayds.mynewstest.Utils.ApiStreams;
 import com.example.theshayds.mynewstest.Utils.ArticleAdapter;
+import com.example.theshayds.mynewstest.Utils.DateServices;
 import com.example.theshayds.mynewstest.Utils.NetworkStatus;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
@@ -48,10 +53,6 @@ public class TopStoriesFragment extends Fragment {
         if(this.disposable != null && !this.disposable.isDisposed()) this.disposable.dispose();
     }
 
-    public static TopStoriesFragment newInstance() {
-       return (new TopStoriesFragment());
-    }
-
     public TopStoriesFragment(){
         // Required empty public constructor
     }
@@ -62,18 +63,20 @@ public class TopStoriesFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_article, container, false);
+
         mProgressBar = mView.findViewById(R.id.progress_bar);
         this.configureRecyclerView();
 
 
         // Checking Network Status
         if (NetworkStatus.getInstance(mView.getContext()).isOnline()) {
+            nyTimesNewsList.clear();
             this.retrofitRequestTopStories();
         } else {
-            Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.drawer_layout), "There is no Internet connexion available...", Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getActivity()).findViewById(R.id.drawer_layout), "There is no Internet connexion available...", Snackbar.LENGTH_LONG);
             snackbar.show();
         }
         return mView;
@@ -117,17 +120,27 @@ public class TopStoriesFragment extends Fragment {
             news.setSection(mResult.getSection());
             news.setUrl(mResult.getUrl());
 
-            // TODO Date Format
-            news.setPublishedDate(mResult.getPublishedDate());
+            // Format Date
+            String outputText = DateServices.dateFormat(mResult.getPublishedDate());
+            news.setPublishedDate(outputText);
 
+            // Show article thumbnail
             if (mResult.getMultimedia().size() != 0){
                 news.setImageURL(mResult.getMultimedia().get(0).getUrl());
             }
+
+            // Sort list
+            Collections.sort(nyTimesNewsList, new Comparator<NYTimesNews>() {
+                @Override
+                public int compare(NYTimesNews o1, NYTimesNews o2) {
+                    return o1.getPublishedDate().compareTo(o2.getPublishedDate());
+                }
+            });
+            Collections.reverse(nyTimesNewsList);
             nyTimesNewsList.add(news);
+
         }
     }
-
-
 
     // Configure RecyclerView, Adapter and LayoutManager
     private void configureRecyclerView() {

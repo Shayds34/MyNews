@@ -17,9 +17,12 @@ import com.example.theshayds.mynewstest.Models.NYTimesNews;
 import com.example.theshayds.mynewstest.R;
 import com.example.theshayds.mynewstest.Utils.ApiStreams;
 import com.example.theshayds.mynewstest.Utils.ArticleAdapter;
+import com.example.theshayds.mynewstest.Utils.DateServices;
 import com.example.theshayds.mynewstest.Utils.NetworkStatus;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
@@ -67,9 +70,9 @@ public class ArticleSearchFragment extends Fragment {
         mProgressBar = mView.findViewById(R.id.progress_bar);
         this.configureRecyclerView();
 
-
         // Checking Network Status
         if (NetworkStatus.getInstance(mView.getContext()).isOnline()) {
+            nyTimesNewsList.clear();
             this.retrofitRequestArticleSearch();
         } else {
             Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.drawer_layout), "There is no Internet connexion available...", Snackbar.LENGTH_LONG);
@@ -111,17 +114,39 @@ public class ArticleSearchFragment extends Fragment {
 
             // Add all information to the list
             news.setTitle(mResult.getSnippet());
-            news.setSection(mResult.getSectionName());
+
+            // For the case "Section Name" is not found in API
+            if (mResult.getSectionName() != null) {
+                news.setSection(mResult.getSectionName());
+            } else {
+                news.setSection("Art & Design");
+            }
+
             news.setUrl(mResult.getWebUrl());
 
-            // TODO Date Format
-            news.setPublishedDate(mResult.getPubDate());
+            // Date Format
+            if (mResult.getPubDate() != null) {
+                // Format Date
+                String outputText = DateServices.dateFormat(mResult.getPubDate());
+                news.setPublishedDate(outputText);
+            } else {
+                news.setPublishedDate("Not Found...");
+            }
 
             // Add static url to complete image url path
             if (mResult.getMultimedia().size() != 0){
                 news.setImageURL("https://static01.nyt.com/" + mResult.getMultimedia().get(0).getUrl());
             }
             nyTimesNewsList.add(news);
+
+            // Sort list
+            Collections.sort(nyTimesNewsList, new Comparator<NYTimesNews>() {
+                @Override
+                public int compare(NYTimesNews o1, NYTimesNews o2) {
+                    return o1.getPublishedDate().compareTo(o2.getPublishedDate());
+                }
+            });
+            Collections.reverse(nyTimesNewsList);
         }
     }
 

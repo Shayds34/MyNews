@@ -11,7 +11,6 @@ public class NetworkStatus {
     private static NetworkStatus instance = new NetworkStatus();
     static Context context;
     ConnectivityManager connectivityManager;
-    NetworkInfo mNetworkInfo;
     boolean connected = false;
 
     public static NetworkStatus getInstance(Context mContext){

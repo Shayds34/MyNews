@@ -5,27 +5,26 @@ import com.example.theshayds.mynewstest.Models.MostPopular;
 import com.example.theshayds.mynewstest.Models.TopStories;
 import com.google.gson.GsonBuilder;
 
-import java.util.List;
-
 import io.reactivex.Observable;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiServices {
 
     // ---------------------------------------------------------------------------------------------
     // Full API URL for TOP STORIES
-    // https://api.nytimes.com/svc/topstories/v2/home.json?api-key=4e57ca5e25324139ab64c95a50c25ef8
+    // https://api.nytimes.com/svc/topstories/v2/home.json?api-key=6sY6IUCABxIDivZZqpoyO2VSwA6oJxOO
 
     // Full API URL for MOST POPULAR
-    // https://api.nytimes.com/svc/mostpopular/v2/mostemailed/all-sections/30.json?api-key=4e57ca5e25324139ab64c95a50c25ef8
+    // https://api.nytimes.com/svc/mostpopular/v2/mostemailed/all-sections/30.json?api-key=6sY6IUCABxIDivZZqpoyO2VSwA6oJxOO
+    // New API URL ?
+    // https://api.nytimes.com/svc/mostpopular/v2/viewed/7.json?api-key
 
     // Full API URL for ARTICLE SEARCH
-    // https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=4e57ca5e25324139ab64c95a50c25ef8&q=sport
+    // https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=6sY6IUCABxIDivZZqpoyO2VSwA6oJxOO&q=sport
     // ---------------------------------------------------------------------------------------------
 
 
@@ -34,11 +33,11 @@ public interface ApiServices {
         Observable<TopStories> getTopStories(@Query("api-key") String apiKey);
 
     // API Request for "Most Popular" tab
-    @GET("svc/mostpopular/v2/mostemailed/all-sections/30.json")
+    @GET("svc/mostpopular/v2/viewed/7.json")
         Observable<MostPopular> getMostPopular(@Query("api-key") String apiKey);
 
     // API Request for "Arts" tab
-    @GET("svc/search/v2/articlesearch.json?api-key=4e57ca5e25324139ab64c95a50c25ef8&q=arts")
+    @GET("svc/search/v2/articlesearch.json?api-key=6sY6IUCABxIDivZZqpoyO2VSwA6oJxOO&q=arts")
         Observable<ArticleSearch> getArticleSearch();
 
     // API Request for "SearchActivity" and "NewsListActivity"

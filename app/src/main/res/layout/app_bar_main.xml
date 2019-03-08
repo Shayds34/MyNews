@@ -24,6 +24,8 @@
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:tabTextColor="@color/actionBarText"
+                app:tabSelectedTextColor="@color/actionBarText"
                 app:tabMode="fixed"
                 app:tabGravity="fill" />
         </android.support.design.widget.AppBarLayout>

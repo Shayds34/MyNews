@@ -5,17 +5,11 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-
 import com.example.theshayds.mynewstest.Controller.NotificationsActivity;
 import com.example.theshayds.mynewstest.R;
 
-import static android.content.Context.MODE_PRIVATE;
-
 
 public class AlarmReceiver extends BroadcastReceiver {
-
-    SharedPreferences mSharedPreferences;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -26,12 +20,17 @@ public class AlarmReceiver extends BroadcastReceiver {
         NotificationsActivity mGetTitle = new NotificationsActivity();
         String textToCompare = mGetTitle.getLastQueryResultId(context);
 
+        // For clickable notification purpose
+        String notificationArticleURL = mGetTitle.getLastQueryResultURL(context);
+        Intent mIntent = new Intent();
+        mIntent.putExtra("URL", notificationArticleURL);
+
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         Notification.Builder mBuilder = new Notification.Builder(context);
         mBuilder.setSmallIcon(R.mipmap.ic_ny_time)
                 .setContentTitle(mTitle)
-                .setContentText(textToCompare)
+                .setContentText(mContent)
                 .setAutoCancel(true);
 
         mNotificationManager.notify(mNotificationID, mBuilder.build());
