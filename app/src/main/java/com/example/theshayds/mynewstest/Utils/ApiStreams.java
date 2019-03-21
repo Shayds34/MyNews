@@ -13,7 +13,7 @@ import io.reactivex.schedulers.Schedulers;
 public class ApiStreams {
 
     private static final String API_KEY = "6sY6IUCABxIDivZZqpoyO2VSwA6oJxOO";
-    public static final String Q_STRING = "sport";
+
 
     public static Observable<TopStories> streamTopStories(){
         ApiServices mApiServices = ApiServices.retrofit.create(ApiServices.class);
