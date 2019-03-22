@@ -13,7 +13,7 @@
     <string name="most_popular">Most Popular</string>
     <string name="business">Business</string>
     <string name="action_search">Search</string>
-    <string name="help_txt">This application was created to send you articles from the New York Times that may interest you.</string>
+    <string name="help_txt">This application was created to send articles from the New York Times that may interest you.</string>
     <string name="about_txt">This application was created as part of an OpenClassrooms learning project.</string>
     <string name="openclassrooms">OpenClassrooms</string>
     <string name="art_and_design"><![CDATA[Art & Design]]></string>
