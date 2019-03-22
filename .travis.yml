@@ -44,7 +44,7 @@ before_install:
 #Executes instrumentation tests located in src/androidTests/
 script:
   #Instrumentation Tests
-  - gradle connectedCheck
+  - ./gradlew connectedCheck
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
