@@ -107,6 +107,8 @@ public class ArticleSearchFragment extends Fragment {
     // Create a list of NYTimesNews with articles from Most Popular API
     private void createListArticleSearch(List<NYTimesNews> nyTimesNewsList, ArticleSearch articleSearch) {
 
+        adapter.clearNews();
+
         for (ArticleSearch.Doc mResult : articleSearch.getResponse().getDocs()) {
 
             // Create a news

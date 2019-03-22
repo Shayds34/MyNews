@@ -105,6 +105,10 @@ public class MostPopularFragment extends Fragment {
 
     // Create a list of NYTimesNews with articles from Most Popular API
     private void createListMostPopular(List<NYTimesNews> nyTimesNewsList, MostPopular mostPopular) {
+
+        // Clear the News List
+        adapter.clearNews();
+
         for (MostPopular.Result mResult : mostPopular.getResults()){
 
             // Create a news
@@ -123,7 +127,6 @@ public class MostPopularFragment extends Fragment {
             if (mResult.getMedia().size() != 0){
                 news.setImageURL(mResult.getMedia().get(0).getMediaMetadata().get(0).getUrl());
             }
-            nyTimesNewsList.add(news);
 
             // Sort list
             Collections.sort(nyTimesNewsList, new Comparator<NYTimesNews>() {
