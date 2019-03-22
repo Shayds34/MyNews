@@ -53,7 +53,7 @@ before_script:
 #Executes instrumentation tests located in src/androidTests/
 script:
   #Instrumentation Tests
-  - ./gradlew connectedCheck 
+  - gradle connectedCheck
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
