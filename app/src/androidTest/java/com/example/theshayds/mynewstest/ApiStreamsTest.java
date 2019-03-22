@@ -79,7 +79,7 @@ public class ApiStreamsTest {
     public void streamArticleSearch() {
 
         // Query terms
-        String mQuery = "Trump";
+        String mQuery = "Tesla";
 
         // Stream
         Observable<ArticleSearch> mArticleSearchObservable = ApiStreams.streamArticlesParameters(mQuery);
