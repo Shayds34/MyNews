@@ -43,7 +43,7 @@ before_install:
 before_script:
   - chmod +x gradlew
   #Unit Tests
-  - ./gradlew build jacocoTestReport assembleAndroidTest
+  - gradle build jacocoTestReport assembleAndroidTest
 # Emulator Management: Create, Start and Wait
   - echo no | android create avd --force -n test -t android-$EMULATOR_API_LEVEL --abi armeabi-v7a -c 100M
   - emulator -avd test -no-audio -no-window &
