@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -26,8 +24,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {
-
-    private static final String TAG = "ArticleAdapter";
 
     // Data
     private List<NYTimesNews> nyTimesNewsList;
@@ -48,15 +44,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
         final ArticleViewHolder mViewHolder = new ArticleViewHolder(mView);
 
-        mViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e(TAG, "position " + mViewHolder.getAdapterPosition());
+        mViewHolder.itemView.setOnClickListener(view -> {
 
-                Intent mIntent = new Intent(v.getContext(), ArticleActivity.class);
-                mIntent.putExtra("URL", nyTimesNewsList.get(mViewHolder.getAdapterPosition()).getUrl());
-                v.getContext().startActivity(mIntent);
-            }
+            Intent mIntent = new Intent(view.getContext(), ArticleActivity.class);
+            mIntent.putExtra("URL", nyTimesNewsList.get(mViewHolder.getAdapterPosition()).getUrl());
+            view.getContext().startActivity(mIntent);
         });
 
         return mViewHolder;
@@ -64,7 +56,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     @Override
     public void onBindViewHolder(@NonNull ArticleViewHolder holder, int position) {
-        Log.d("TAG", "onBindViewHolder: called");
         holder.updateWithArticles(this.nyTimesNewsList.get(position));
 
     }
@@ -81,7 +72,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
         return nyTimesNewsList.size();
     }
 
-    public class ArticleViewHolder extends RecyclerView.ViewHolder {
+    class ArticleViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.item_title) TextView mTitle;
         @BindView(R.id.item_category) TextView mSection;

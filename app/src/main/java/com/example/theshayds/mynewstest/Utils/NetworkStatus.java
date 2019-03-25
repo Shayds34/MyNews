@@ -3,15 +3,13 @@ package com.example.theshayds.mynewstest.Utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 
 public class NetworkStatus {
 
     private static NetworkStatus instance = new NetworkStatus();
-    static Context context;
-    ConnectivityManager connectivityManager;
-    boolean connected = false;
+    private static Context context;
+    private boolean isConnected = false;
 
     public static NetworkStatus getInstance(Context mContext){
         context = mContext.getApplicationContext();
@@ -20,18 +18,16 @@ public class NetworkStatus {
 
     public boolean isOnline(){
         try{
-            connectivityManager = (ConnectivityManager) context
-                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-            NetworkInfo mNetworkInfo = connectivityManager.getActiveNetworkInfo();
-            connected = mNetworkInfo != null && mNetworkInfo.isAvailable() && mNetworkInfo.isConnected();
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            isConnected = mNetworkInfo != null && mNetworkInfo.isAvailable() && mNetworkInfo.isConnected();
 
-            return connected;
+            return isConnected;
 
         } catch (Exception e){
-            System.out.println("CheckConnectivity Exception :" + e.getMessage());
-            Log.v("Connectivity", e.toString());
+            System.out.println("CheckConnectivity Exception: " + e.getMessage());
         }
-        return connected;
+        return isConnected;
     }
 }

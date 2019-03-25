@@ -16,7 +16,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.example.theshayds.mynewstest.Models.ArticleSearch;
 import com.example.theshayds.mynewstest.R;
@@ -125,7 +124,6 @@ public class NotificationsActivity extends AppCompatActivity {
                             Intent mIntent = new Intent(NotificationsActivity.this, AlarmReceiver.class);
                             mIntent.putExtra("NotificationID", mNotificationID);
                             mIntent.putExtra("Title", "MyNews");
-                            // TODO
                             mIntent.putExtra("URL", "");
                             mIntent.putExtra("Content", "De nouveaux articles sont disponibles.");
 
@@ -137,9 +135,8 @@ public class NotificationsActivity extends AppCompatActivity {
                             AlarmManager mAlarm = (AlarmManager) getSystemService(ALARM_SERVICE);
 
                             if (mAlarm != null) {
-                                mAlarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, mStartTime.getTimeInMillis(), 10000, mAlarmIntent);
+                                mAlarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, mStartTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, mAlarmIntent);
                             }
-                            Toast.makeText(getApplicationContext(), lastQueryId, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
