@@ -2,6 +2,8 @@
   <dictionary name="The Shayds">
     <words>
       <w>gson</w>
+      <w>openclassrooms</w>
+      <w>robolectric</w>
     </words>
   </dictionary>
 </component>
