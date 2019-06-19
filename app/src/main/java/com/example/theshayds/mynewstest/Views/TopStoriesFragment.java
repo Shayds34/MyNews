@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-
 import com.example.theshayds.mynewstest.Models.NYTimesNews;
 import com.example.theshayds.mynewstest.Models.TopStories;
 import com.example.theshayds.mynewstest.R;
@@ -20,17 +19,17 @@ import com.example.theshayds.mynewstest.Utils.ApiStreams;
 import com.example.theshayds.mynewstest.Utils.ArticleAdapter;
 import com.example.theshayds.mynewstest.Utils.DateServices;
 import com.example.theshayds.mynewstest.Utils.NetworkStatus;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
+
 public class TopStoriesFragment extends Fragment {
+
+    public static final String TAG = "TopStoriesFragment";
 
     // Use for Data
     private Disposable disposable;
@@ -94,12 +93,11 @@ public class TopStoriesFragment extends Fragment {
 
             @Override
             public void onError(Throwable e) {
-                Log.e("TAG", "ON ERROR " + Log.getStackTraceString(e));
+                Log.e(TAG, "onError: " + Log.getStackTraceString(e));
             }
 
             @Override
             public void onComplete() {
-                Log.e("TAG", "ON COMPLETE");
                 mProgressBar.setVisibility(View.GONE);
             }
         });
@@ -130,12 +128,7 @@ public class TopStoriesFragment extends Fragment {
             }
 
             // Sort list
-            Collections.sort(nyTimesNewsList, new Comparator<NYTimesNews>() {
-                @Override
-                public int compare(NYTimesNews o1, NYTimesNews o2) {
-                    return o1.getPublishedDate().compareTo(o2.getPublishedDate());
-                }
-            });
+            Collections.sort(nyTimesNewsList, (o1, o2) -> o1.getPublishedDate().compareTo(o2.getPublishedDate()));
             Collections.reverse(nyTimesNewsList);
             nyTimesNewsList.add(news);
 

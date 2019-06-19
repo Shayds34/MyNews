@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 
@@ -69,92 +68,90 @@ public class NotificationsActivity extends AppCompatActivity {
         }
 
         // Create switch events
-        mNotificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    // Toggle switch button to "On"
-                    SharedPreferences.Editor mEditor = getSharedPreferences("toggle_state", MODE_PRIVATE).edit();
-                    mEditor.putBoolean("State", true);
-                    mEditor.apply();
+        mNotificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked){
+                // Toggle switch button to "On"
+                SharedPreferences.Editor mEditor = getSharedPreferences("toggle_state", MODE_PRIVATE).edit();
+                mEditor.putBoolean("State", true);
+                mEditor.apply();
 
-                    // TODO : Fetch data with API and try them
-                    mSearchTerm = findViewById(R.id.search_query_text);
+                // TODO : Fetch data with API and try them
+                mSearchTerm = findViewById(R.id.search_query_text);
 
-                    ArrayList<String> mQueries = new ArrayList<>();
-                    String mSearchQuery = mSearchTerm.getText().toString();
+                ArrayList<String> mQueries = new ArrayList<>();
+                String mSearchQuery = mSearchTerm.getText().toString();
 
-                    if(!mSearchQuery.equals("")){
-                        mQueries.add(mSearchQuery);
-                    }
-                    if(mArts.isChecked()){
-                        mQueries.add("arts");
-                    }
-                    if(mEntrepreneurs.isChecked()){
-                        mQueries.add("entrepreneurs");
-                    }
-                    if(mBusiness.isChecked()){
-                        mQueries.add("business");
-                    }
-                    if(mPolitics.isChecked()){
-                        mQueries.add("politics");
-                    }
-                    if(mTravel.isChecked()){
-                        mQueries.add("travel");
-                    }
-                    if(mSports.isChecked()){
-                        mQueries.add("sports");
-                    }
+                if(!mSearchQuery.equals("")){
+                    mQueries.add(mSearchQuery);
+                }
+                if(mArts.isChecked()){
+                    mQueries.add("arts");
+                }
+                if(mEntrepreneurs.isChecked()){
+                    mQueries.add("entrepreneurs");
+                }
+                if(mBusiness.isChecked()){
+                    mQueries.add("business");
+                }
+                if(mPolitics.isChecked()){
+                    mQueries.add("politics");
+                }
+                if(mTravel.isChecked()){
+                    mQueries.add("travel");
+                }
+                if(mSports.isChecked()){
+                    mQueries.add("sports");
+                }
 
-                    // Separate queries with "&" symbol
-                    String result = TextUtils.join("&", mQueries);
+                // Separate queries with "&" symbol
+                String result = TextUtils.join("&", mQueries);
 
-                    // API query with all parameters
-                    disposable = ApiStreams.streamArticlesParameters(result).subscribeWith(new DisposableObserver<ArticleSearch>() {
-                        @Override
-                        public void onNext(ArticleSearch articleSearch) {
-                            String lastQueryId = articleSearch.getResponse().getDocs().get(0).getSnippet();
-                            String lastQueryURL = articleSearch.getResponse().getDocs().get(0).getWebUrl();
+                // API query with all parameters
+                disposable = ApiStreams.streamArticlesParameters(result).subscribeWith(new DisposableObserver<ArticleSearch>() {
+                    @Override
+                    public void onNext(ArticleSearch articleSearch) {
+                        String lastQueryId = articleSearch.getResponse().getDocs().get(0).getSnippet();
+                        String lastQueryURL = articleSearch.getResponse().getDocs().get(0).getWebUrl();
 
-                            setLastQueryResultId(getApplicationContext(), lastQueryId);
-                            setLastQueryResultURL(getApplicationContext(), lastQueryURL);
+                        setLastQueryResultId(getApplicationContext(), lastQueryId);
+                        setLastQueryResultURL(getApplicationContext(), lastQueryURL);
 
-                            int mNotificationID = 1;
-                            // Set NotificationID and Text
-                            Intent mIntent = new Intent(NotificationsActivity.this, AlarmReceiver.class);
-                            mIntent.putExtra("NotificationID", mNotificationID);
-                            mIntent.putExtra("Title", "MyNews");
-                            mIntent.putExtra("URL", "");
-                            mIntent.putExtra("Content", "De nouveaux articles sont disponibles.");
+                        int mNotificationID = 1;
+                        // Set NotificationID and Text
+                        Intent mIntent = new Intent(NotificationsActivity.this, AlarmReceiver.class);
+                        mIntent.putExtra("NotificationID", mNotificationID);
+                        mIntent.putExtra("Title", "MyNews");
+                        mIntent.putExtra("URL", "");
+                        mIntent.putExtra("Content", "De nouveaux articles sont disponibles.");
 
-                            Calendar mStartTime = Calendar.getInstance();
+                        Calendar mStartTime = Calendar.getInstance();
 
-                            // Get Broadcast(context, requestCode, intent, flags)
-                            PendingIntent mAlarmIntent = PendingIntent.getBroadcast(NotificationsActivity.this, 0, mIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                        // Get Broadcast(context, requestCode, intent, flags)
+                        PendingIntent mAlarmIntent = PendingIntent.getBroadcast(NotificationsActivity.this, 0, mIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-                            AlarmManager mAlarm = (AlarmManager) getSystemService(ALARM_SERVICE);
+                        AlarmManager mAlarm = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-                            if (mAlarm != null) {
-                                mAlarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, mStartTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, mAlarmIntent);
-                            }
+                        if (mAlarm != null) {
+                            mAlarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, mStartTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, mAlarmIntent);
                         }
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {}
+                    @Override
+                    public void onError(Throwable e) {}
 
-                        @Override
-                        public void onComplete() {}
-                    });
-                }
-                else {
-                    // Toggle switch button to "Off"
-                    SharedPreferences.Editor mEditor = getSharedPreferences("toggle_state", MODE_PRIVATE).edit();
-                    mEditor.putBoolean("State", false);
-                    mEditor.apply();
-                    // TODO : Cancel AlarmReceiver
-                    NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                    mNotificationManager.cancel(getIntent().getExtras().getInt("NotificationID"));
-                }
+                    @Override
+                    public void onComplete() {}
+                });
+            }
+            else {
+                // Toggle switch button to "Off"
+                SharedPreferences.Editor mEditor = getSharedPreferences("toggle_state", MODE_PRIVATE).edit();
+                mEditor.putBoolean("State", false);
+                mEditor.apply();
+
+                // TODO : Cancel AlarmReceiver
+                NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                mNotificationManager.cancel(getIntent().getExtras().getInt("NotificationID"));
             }
         });
     }
@@ -191,7 +188,7 @@ public class NotificationsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            finish(); // close this activity and return to preview activity (if there is any)
+            finish(); // close this activity and return to previous activity (if there is any)
         }
         return super.onOptionsItemSelected(item);
     }

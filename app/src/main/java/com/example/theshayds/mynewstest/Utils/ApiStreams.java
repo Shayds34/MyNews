@@ -14,7 +14,7 @@ public class ApiStreams {
 
     private static final String API_KEY = "6sY6IUCABxIDivZZqpoyO2VSwA6oJxOO";
 
-
+    // Stream to populate TopStories' fragment list.
     public static Observable<TopStories> streamTopStories(){
         ApiServices mApiServices = ApiServices.retrofit.create(ApiServices.class);
         return mApiServices.getTopStories(API_KEY)
@@ -22,8 +22,7 @@ public class ApiStreams {
                 .observeOn(AndroidSchedulers.mainThread())
                 .timeout(10, TimeUnit.SECONDS);
     }
-
-    // TODO use this to fetch Most Popular
+    // Stream to populate MostPopular's fragment list.
     public static Observable<MostPopular> streamMostPopular(){
         ApiServices mApiServices = ApiServices.retrofit.create(ApiServices.class);
         return mApiServices.getMostPopular(API_KEY)
@@ -32,7 +31,7 @@ public class ApiStreams {
                 .timeout(10, TimeUnit.SECONDS);
     }
 
-    // TODO use this to fetch Article Search
+    // Stream to populate third fragment list.
     public static Observable<ArticleSearch> streamArticleSearch(){
         ApiServices mApiServices = ApiServices.retrofit.create(ApiServices.class);
         return mApiServices.getArticleSearch()
@@ -41,6 +40,7 @@ public class ApiStreams {
                 .timeout(10, TimeUnit.SECONDS);
     }
 
+    // Stream to populate searched articles for NewsListActivity list.
     public static Observable<ArticleSearch> streamArticlesParameters(String query){
         ApiServices mApiServices = ApiServices.retrofit.create(ApiServices.class);
         return mApiServices.getAllSearchedArticles(query, API_KEY)
@@ -48,5 +48,4 @@ public class ApiStreams {
                 .observeOn(AndroidSchedulers.mainThread())
                 .timeout(10, TimeUnit.SECONDS);
     }
-
 }

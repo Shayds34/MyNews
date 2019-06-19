@@ -34,7 +34,6 @@ public class ApiStreamsTest {
                             .assertNoTimeout()
                             .awaitTerminalEvent();
 
-
         // Get List
         TopStories mTopStories = mTestObserver.values().get(0);
 
@@ -46,7 +45,6 @@ public class ApiStreamsTest {
 
         // Check if results exist
         assertNotNull(mTopStories.getResults());
-
     }
 
 
@@ -63,7 +61,6 @@ public class ApiStreamsTest {
                 .assertNoErrors()
                 .assertNoTimeout()
                 .awaitTerminalEvent();
-
 
         // Get List
         MostPopular mMostPopular = mTestObserver.values().get(0);

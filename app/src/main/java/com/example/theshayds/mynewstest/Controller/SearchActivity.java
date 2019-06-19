@@ -6,12 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
+
 import com.example.theshayds.mynewstest.R;
+
 import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity {
@@ -19,7 +19,6 @@ public class SearchActivity extends AppCompatActivity {
     EditText mSearchTerm;
     CheckBox mArts, mEntrepreneurs, mBusiness, mPolitics, mTravel, mSports;
     Button mSearch;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,45 +45,44 @@ public class SearchActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        mSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        // TODO : add If mSearchQuery.isEmpty() ?
+        // TODO : at least one isChecked()
+        mSearch.setOnClickListener(v -> {
 
-                mSearchTerm = findViewById(R.id.search_query_text);
+            mSearchTerm = findViewById(R.id.search_query_text);
 
-                ArrayList<String> mQueries = new ArrayList<>();
-                String mSearchQuery = mSearchTerm.getText().toString();
+            ArrayList<String> mQueries = new ArrayList<>();
+            String mSearchQuery = mSearchTerm.getText().toString();
 
-                if(!mSearchQuery.equals("")){
-                    mQueries.add(mSearchQuery);
-                }
-
-                if(mArts.isChecked()){
-                    mQueries.add("arts");
-                }
-                if(mEntrepreneurs.isChecked()){
-                    mQueries.add("entrepreneurs");
-                }
-                if(mBusiness.isChecked()){
-                    mQueries.add("business");
-                }
-                if(mPolitics.isChecked()){
-                    mQueries.add("politics");
-                }
-                if(mTravel.isChecked()){
-                    mQueries.add("travel");
-                }
-                if(mSports.isChecked()){
-                    mQueries.add("sports");
-                }
-
-                // Separate queries with "&" symbol
-                String result = TextUtils.join("&", mQueries);
-
-                Intent mIntent = new Intent(SearchActivity.this, NewsListActivity.class);
-                mIntent.putExtra("query", result);
-                startActivity(mIntent);
+            if(!mSearchQuery.equals("")){
+                mQueries.add(mSearchQuery);
             }
+
+            if(mArts.isChecked()){
+                mQueries.add("arts");
+            }
+            if(mEntrepreneurs.isChecked()){
+                mQueries.add("entrepreneurs");
+            }
+            if(mBusiness.isChecked()){
+                mQueries.add("business");
+            }
+            if(mPolitics.isChecked()){
+                mQueries.add("politics");
+            }
+            if(mTravel.isChecked()){
+                mQueries.add("travel");
+            }
+            if(mSports.isChecked()){
+                mQueries.add("sports");
+            }
+
+            // Separate queries with "&" symbol
+            String result = TextUtils.join("&", mQueries);
+
+            Intent mIntent = new Intent(SearchActivity.this, NewsListActivity.class);
+            mIntent.putExtra("query", result);
+            startActivity(mIntent);
         });
     }
 

@@ -30,6 +30,8 @@ import io.reactivex.observers.DisposableObserver;
 
 public class MostPopularFragment extends Fragment {
 
+    public static final String TAG = "MostPopularFragment";
+
     // Use for Data
     private Disposable disposable;
     private List<NYTimesNews> nyTimesNewsList = new ArrayList<>();
@@ -92,12 +94,11 @@ public class MostPopularFragment extends Fragment {
 
             @Override
             public void onError(Throwable e) {
-                Log.e("TAG", "ON ERROR " + Log.getStackTraceString(e));
+                Log.e(TAG, "ON ERROR " + Log.getStackTraceString(e));
             }
 
             @Override
             public void onComplete() {
-                Log.e("TAG", "ON COMPLETE");
                 mProgressBar.setVisibility(View.GONE);
             }
         });

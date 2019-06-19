@@ -15,6 +15,7 @@ import com.example.theshayds.mynewstest.Models.ArticleSearch;
 import com.example.theshayds.mynewstest.Models.NYTimesNews;
 import com.example.theshayds.mynewstest.R;
 import com.example.theshayds.mynewstest.Utils.ApiStreams;
+import com.example.theshayds.mynewstest.Utils.DateServices;
 import com.example.theshayds.mynewstest.Utils.NetworkStatus;
 import com.example.theshayds.mynewstest.Utils.ArticleAdapter;
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ import io.reactivex.observers.DisposableObserver;
 
 public class NewsListActivity extends AppCompatActivity{
 
+    public static final String TAG = "NewsListActivity";
+
     // Use for Data
     private Disposable disposable;
     private List<NYTimesNews> nyTimesNewsList = new ArrayList<>();
@@ -31,7 +34,6 @@ public class NewsListActivity extends AppCompatActivity{
     // Use For Design UI
     RecyclerView mRecyclerView;
     ArticleAdapter adapter;
-
 
     @Override
     public void onDestroy(){
@@ -74,6 +76,7 @@ public class NewsListActivity extends AppCompatActivity{
 
     // Create Subscriber for Article Search with all parameters
     private void retrofitRequestArticleSearch( ){
+
         // Get parameters from getStringExtra() to search articles
         Intent mIntent = getIntent();
         final String mQuery = mIntent.getStringExtra("query");
@@ -87,12 +90,12 @@ public class NewsListActivity extends AppCompatActivity{
 
             @Override
             public void onError(Throwable e) {
-                Log.e("TAG", "ON ERROR " + Log.getStackTraceString(e));
+                Log.e(TAG, "ON ERROR " + Log.getStackTraceString(e));
             }
 
             @Override
             public void onComplete() {
-                Log.e("TAG", "ON COMPLETE");
+                Log.d(TAG, "ON COMPLETE");
             }
         });
     }
@@ -101,8 +104,8 @@ public class NewsListActivity extends AppCompatActivity{
     // Create a list of NYTimesNews with articles from Most Popular API
     private void createListArticleSearch(List<NYTimesNews> nyTimesNewsList, ArticleSearch articleSearch) {
 
+        // For each result in all results we create a new News (NYTimesNews).
         for (ArticleSearch.Doc mResult : articleSearch.getResponse().getDocs()) {
-
             // Create a news
             NYTimesNews news = new NYTimesNews();
 
@@ -111,8 +114,9 @@ public class NewsListActivity extends AppCompatActivity{
             news.setSection(mResult.getSectionName());
             news.setUrl(mResult.getWebUrl());
 
-            // TODO Date Format
-            news.setPublishedDate(mResult.getPubDate());
+            // Format Date
+            String outputText = DateServices.dateFormat(mResult.getPubDate());
+            news.setPublishedDate(outputText);
 
             // Add static url to complete image url path
             if (mResult.getMultimedia().size() != 0){
@@ -121,8 +125,6 @@ public class NewsListActivity extends AppCompatActivity{
             nyTimesNewsList.add(news);
         }
     }
-
-
 
     // Configure RecyclerView, Adapter and LayoutManager
     private void configureRecyclerView() {
@@ -143,8 +145,4 @@ public class NewsListActivity extends AppCompatActivity{
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
 }

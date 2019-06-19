@@ -71,52 +71,49 @@ public class MainActivity extends AppCompatActivity {
         // NavigationDrawer multiple events
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        // Set item as selected to persist highlight
+                item -> {
+                    // Set item as selected to persist highlight
+                    switch (item.getItemId()) {
 
-                        switch (item.getItemId()) {
-
-                            case id.nav_top_stories :{
-                                mViewPager.setCurrentItem(0);
-                                break;
-                                }
-
-                            case id.nav_most_popular :{
-                                mViewPager.setCurrentItem(1);
-                                break;
+                        case id.nav_top_stories :{
+                            mViewPager.setCurrentItem(0);
+                            break;
                             }
 
-                            case id.nav_arts :{
-                                mViewPager.setCurrentItem(2);
-                                break;
-                            }
-                            case id.nav_search :{
-                                Intent mIntent = new Intent(MainActivity.this, SearchActivity.class);
-                                startActivity(mIntent);
-                                break;
-                            }
-
-                            case id.nav_notifications :{
-                                Intent mIntent = new Intent(MainActivity.this, NotificationsActivity.class);
-                                startActivity(mIntent);
-                                break;
-                            }
-
-                            case id.nav_help :{
-                                showHelpPopup();
-                                break;
-                            }
-                            case id.nav_about :{
-                                showAboutPopup();
-                                break;
-                            }
+                        case id.nav_most_popular :{
+                            mViewPager.setCurrentItem(1);
+                            break;
                         }
-                        // Close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
-                        return true;
+
+                        case id.nav_arts :{
+                            mViewPager.setCurrentItem(2);
+                            break;
+                        }
+                        case id.nav_search :{
+                            Intent mIntent = new Intent(MainActivity.this, SearchActivity.class);
+                            startActivity(mIntent);
+                            break;
+                        }
+
+                        case id.nav_notifications :{
+                            Intent mIntent = new Intent(MainActivity.this, NotificationsActivity.class);
+                            startActivity(mIntent);
+                            break;
+                        }
+
+                        case id.nav_help :{
+                            showHelpPopup();
+                            break;
+                        }
+
+                        case id.nav_about :{
+                            showAboutPopup();
+                            break;
+                        }
                     }
+                    // Close drawer when item is tapped
+                    mDrawerLayout.closeDrawers();
+                    return true;
                 });
 
         mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
