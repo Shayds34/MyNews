@@ -10,14 +10,6 @@
         android:hint="Search query term"
         android:padding="20dp" />
 
-    <DatePicker
-        android:id="@+id/simple_date_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:datePickerMode="spinner">
-
-    </DatePicker>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,6 +22,18 @@
             android:orientation="vertical"
             android:layout_weight="1"
             android:padding="15dp">
+
+
+            <TextView
+                android:id="@+id/textView_begin_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Begin Date"/>
+
+            <Spinner
+                android:id="@+id/spinner_begin_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <CheckBox
                 android:id="@+id/checkbox_arts"
@@ -57,6 +61,17 @@
             android:orientation="vertical"
             android:layout_weight="1"
             android:padding="15dp">
+
+            <TextView
+                android:id="@+id/textView_end_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End Date"/>
+
+            <Spinner
+                android:id="@+id/spinner_end_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <CheckBox
                 android:id="@+id/checkbox_politics"

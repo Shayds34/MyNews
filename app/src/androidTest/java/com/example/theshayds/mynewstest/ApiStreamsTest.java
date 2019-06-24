@@ -12,8 +12,7 @@ import org.junit.runners.JUnit4;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.*;
 
 
 @RunWith(JUnit4.class)

@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.theshayds.mynewstest.R;
 
@@ -16,6 +18,8 @@ import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity {
 
+    TextView mBeginDate, mEndDate;
+    Spinner mBeginDateSpinner, mEndDateSpinner;
     EditText mSearchTerm;
     CheckBox mArts, mEntrepreneurs, mBusiness, mPolitics, mTravel, mSports;
     Button mSearch;
@@ -25,7 +29,16 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        // Date Text View and Spinner
+        mBeginDate = findViewById(R.id.textView_begin_date);
+        mBeginDateSpinner = findViewById(R.id.spinner_begin_date);
+        mEndDate = findViewById(R.id.textView_end_date);
+        mEndDateSpinner = findViewById(R.id.spinner_end_date);
+
+        // Edit text
         mSearchTerm = findViewById(R.id.search_query_text);
+
+        // Checkboxes
         mArts = findViewById(R.id.checkbox_arts);
         mEntrepreneurs = findViewById(R.id.checkbox_entrepreneurs);
         mBusiness = findViewById(R.id.checkbox_business);
@@ -36,7 +49,7 @@ public class SearchActivity extends AppCompatActivity {
         mSearch = findViewById(R.id.button_search);
 
         final Toolbar mToolbar = findViewById(R.id.toolbar);
-        mToolbar.setTitle("Search");
+        mToolbar.setTitle("Search Articles");
         setSupportActionBar(mToolbar);
 
         // add back arrow to toolbar
