@@ -29,19 +29,19 @@ public interface ApiServices {
 
 
     // API Request for "Top Stories" tab
-    @GET("svc/topstories/v2/home.json")
+    @GET("svc/topstories/v2/home.json?sort=newest")
         Observable<TopStories> getTopStories(@Query("api-key") String apiKey);
 
     // API Request for "Most Popular" tab
-    @GET("svc/mostpopular/v2/viewed/7.json")
+    @GET("svc/mostpopular/v2/viewed/7.json?sort=newest")
         Observable<MostPopular> getMostPopular(@Query("api-key") String apiKey);
 
     // API Request for "Arts" tab
-    @GET("svc/search/v2/articlesearch.json?api-key=6sY6IUCABxIDivZZqpoyO2VSwA6oJxOO&q=arts")
+    @GET("svc/search/v2/articlesearch.json?sort=newest&api-key=6sY6IUCABxIDivZZqpoyO2VSwA6oJxOO&q=arts")
         Observable<ArticleSearch> getArticleSearch();
 
     // API Request for "SearchActivity" and "NewsListActivity"
-    @GET("svc/search/v2/articlesearch.json")
+    @GET("svc/search/v2/articlesearch.json?sort=newest")
         Observable<ArticleSearch> getAllSearchedArticles(@Query("q") String query, @Query("api-key") String apiKey);
 
 

@@ -27,6 +27,8 @@ import java.util.Calendar;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
+import static android.view.View.GONE;
+
 public class NotificationsActivity extends AppCompatActivity {
 
     private Disposable disposable;
@@ -42,6 +44,9 @@ public class NotificationsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notifications);
+
+        findViewById(R.id.fields_begin_date).setVisibility(GONE);
+        findViewById(R.id.fields_end_date).setVisibility(GONE);
 
         // Bind UI items
         mSearchTerm = findViewById(R.id.search_query_text);

@@ -1,25 +1,28 @@
 package com.example.theshayds.mynewstest.Controller;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.example.theshayds.mynewstest.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class SearchActivity extends AppCompatActivity {
 
-    TextView mBeginDate, mEndDate;
-    Spinner mBeginDateSpinner, mEndDateSpinner;
+    // Use Button with Spinner Style
+    Button mBeginDateButton, mEndDateButton;
+
     EditText mSearchTerm;
     CheckBox mArts, mEntrepreneurs, mBusiness, mPolitics, mTravel, mSports;
     Button mSearch;
@@ -29,11 +32,18 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        // Date Text View and Spinner
-        mBeginDate = findViewById(R.id.textView_begin_date);
-        mBeginDateSpinner = findViewById(R.id.spinner_begin_date);
-        mEndDate = findViewById(R.id.textView_end_date);
-        mEndDateSpinner = findViewById(R.id.spinner_end_date);
+        findViewById(R.id.fields_begin_date).setVisibility(View.VISIBLE);
+        findViewById(R.id.fields_end_date).setVisibility(View.VISIBLE);
+
+        // Date
+        mBeginDateButton = findViewById(R.id.button_being_date);
+        mEndDateButton = findViewById(R.id.button_end_date);
+
+        // Calendar
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
         // Edit text
         mSearchTerm = findViewById(R.id.search_query_text);
@@ -57,6 +67,39 @@ public class SearchActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+
+        // Default Date on the Begin Date Spinner
+        mBeginDateButton.setText(dayOfMonth + "/" + month  + "/" + year);
+
+        mBeginDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(SearchActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                                mBeginDateButton.setText(day +"/" + (month + 1) + "/" + year);
+                            }
+                        }, year,month,dayOfMonth);
+                datePickerDialog.show();
+            }
+        });
+
+        mEndDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(SearchActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                                mEndDateButton.setText(day +"/" + (month + 1) + "/" + year);
+                            }
+                        }, year,month,dayOfMonth);
+                datePickerDialog.show();
+            }
+        });
 
         // TODO : add If mSearchQuery.isEmpty() ?
         // TODO : at least one isChecked()
