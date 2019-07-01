@@ -1,44 +1,34 @@
 package com.example.theshayds.mynewstest.Controller;
 
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
-import com.example.theshayds.mynewstest.Models.ArticleSearch;
 import com.example.theshayds.mynewstest.R;
 import com.example.theshayds.mynewstest.Utils.AlarmReceiver;
-import com.example.theshayds.mynewstest.Utils.ApiStreams;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableObserver;
-
 import static android.view.View.GONE;
 
 public class NotificationsActivity extends AppCompatActivity {
+    public static final String TAG = "NotificationsActivity";
 
-    private Disposable disposable;
     private EditText mSearchTerm;
     private CheckBox mArts, mEntrepreneurs, mBusiness, mPolitics, mTravel, mSports;
-    private Switch mNotificationSwitch;
-    private SharedPreferences sharedPreferences;
-
-
-    private static final String PREF_LAST_QUERY_ID = "lastQueryId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +47,8 @@ public class NotificationsActivity extends AppCompatActivity {
         mTravel = findViewById(R.id.checkbox_travel);
         mSports = findViewById(R.id.checkbox_sports);
 
-        mNotificationSwitch = findViewById(R.id.notification_switch);
-        sharedPreferences = getSharedPreferences("toggle_state", MODE_PRIVATE);
+        Switch mNotificationSwitch = findViewById(R.id.notification_switch);
+        SharedPreferences sharedPreferences = getSharedPreferences("toggle_state", MODE_PRIVATE);
         mNotificationSwitch.setChecked(sharedPreferences.getBoolean("State", false));
 
         // Create Toolbar
@@ -74,119 +64,63 @@ public class NotificationsActivity extends AppCompatActivity {
 
         // Create switch events
         mNotificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked){
+            if(isChecked) {
                 // Toggle switch button to "On"
                 SharedPreferences.Editor mEditor = getSharedPreferences("toggle_state", MODE_PRIVATE).edit();
                 mEditor.putBoolean("State", true);
                 mEditor.apply();
 
-                // TODO : Fetch data with API and try them
                 mSearchTerm = findViewById(R.id.search_query_text);
-
-                ArrayList<String> mQueries = new ArrayList<>();
                 String mSearchQuery = mSearchTerm.getText().toString();
 
-                if(!mSearchQuery.equals("")){
-                    mQueries.add(mSearchQuery);
-                }
-                if(mArts.isChecked()){
-                    mQueries.add("arts");
-                }
-                if(mEntrepreneurs.isChecked()){
-                    mQueries.add("entrepreneurs");
-                }
-                if(mBusiness.isChecked()){
-                    mQueries.add("business");
-                }
-                if(mPolitics.isChecked()){
-                    mQueries.add("politics");
-                }
-                if(mTravel.isChecked()){
-                    mQueries.add("travel");
-                }
-                if(mSports.isChecked()){
-                    mQueries.add("sports");
-                }
+                ArrayList<String> mQueries = new ArrayList<>();
 
-                // Separate queries with "&" symbol
-                String result = TextUtils.join("&", mQueries);
+                if (mSearchQuery.isEmpty()){
 
-                // API query with all parameters
-                disposable = ApiStreams.streamArticlesParameters(result).subscribeWith(new DisposableObserver<ArticleSearch>() {
-                    @Override
-                    public void onNext(ArticleSearch articleSearch) {
-                        String lastQueryId = articleSearch.getResponse().getDocs().get(0).getSnippet();
-                        String lastQueryURL = articleSearch.getResponse().getDocs().get(0).getWebUrl();
+                    Toast.makeText(this, "You have to enter a search query term and at least one checkbox.", Toast.LENGTH_SHORT).show();
+                    mNotificationSwitch.setChecked(false);
 
-                        setLastQueryResultId(getApplicationContext(), lastQueryId);
-                        setLastQueryResultURL(getApplicationContext(), lastQueryURL);
+                } else if ((mArts.isChecked() || mEntrepreneurs.isChecked() || mBusiness.isChecked() || mPolitics.isChecked() || mTravel.isChecked() || mSports.isChecked())) {
 
-                        int mNotificationID = 1;
-                        // Set NotificationID and Text
-                        Intent mIntent = new Intent(NotificationsActivity.this, AlarmReceiver.class);
-                        mIntent.putExtra("NotificationID", mNotificationID);
-                        mIntent.putExtra("Title", "MyNews");
-                        mIntent.putExtra("URL", "");
-                        mIntent.putExtra("Content", "De nouveaux articles sont disponibles.");
-
-                        Calendar mStartTime = Calendar.getInstance();
-
-                        // Get Broadcast(context, requestCode, intent, flags)
-                        PendingIntent mAlarmIntent = PendingIntent.getBroadcast(NotificationsActivity.this, 0, mIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-                        AlarmManager mAlarm = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-                        if (mAlarm != null) {
-                            mAlarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, mStartTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, mAlarmIntent);
-                        }
+                    if (mArts.isChecked()) {
+                        mQueries.add("arts");
+                    }
+                    if (mEntrepreneurs.isChecked()) {
+                        mQueries.add("entrepreneurs");
+                    }
+                    if (mBusiness.isChecked()) {
+                        mQueries.add("business");
+                    }
+                    if (mPolitics.isChecked()) {
+                        mQueries.add("politics");
+                    }
+                    if (mTravel.isChecked()) {
+                        mQueries.add("travel");
+                    }
+                    if (mSports.isChecked()) {
+                        mQueries.add("sports");
                     }
 
-                    @Override
-                    public void onError(Throwable e) {}
+                    // Separate queries with empty space " ".
+                    String result = TextUtils.join(" ", mQueries);
 
-                    @Override
-                    public void onComplete() {}
-                });
-            }
-            else {
+                    // Start Notification
+                    startAlarmReceiver(mSearchQuery, result);
+                } else {
+                    Toast.makeText(this, "You have to enter a search query term and at least one checkbox.", Toast.LENGTH_SHORT).show();
+                    mNotificationSwitch.setChecked(false);
+                }
+            } else {
+
                 // Toggle switch button to "Off"
                 SharedPreferences.Editor mEditor = getSharedPreferences("toggle_state", MODE_PRIVATE).edit();
                 mEditor.putBoolean("State", false);
                 mEditor.apply();
 
-                // TODO : Cancel AlarmReceiver
-                NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                mNotificationManager.cancel(getIntent().getExtras().getInt("NotificationID"));
+                // Cancel Notification
+                cancelAlarmReceiver();
             }
         });
-    }
-
-
-    // Save LastQueryId = Title
-    public static void setLastQueryResultId(Context context, String lastQueryId){
-        PreferenceManager.getDefaultSharedPreferences(context)
-                .edit()
-                .putString(PREF_LAST_QUERY_ID, lastQueryId)
-                .apply();
-    }
-
-    // Save LastQueryURL = URL
-    public static void setLastQueryResultURL(Context context, String lastQueryId){
-        PreferenceManager.getDefaultSharedPreferences(context)
-                .edit()
-                .putString("URL", lastQueryId)
-                .apply();
-    }
-
-    public String getLastQueryResultId(Context context){
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPref.getString(PREF_LAST_QUERY_ID, "");
-
-    }
-
-    public String getLastQueryResultURL(Context context) {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPref.getString("URL", "");
     }
 
     @Override
@@ -196,5 +130,35 @@ public class NotificationsActivity extends AppCompatActivity {
             finish(); // close this activity and return to previous activity (if there is any)
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // Start alarmReceiver
+    private void startAlarmReceiver(String query, String filterQuery){
+
+        Intent notificationIntent = new Intent(this, AlarmReceiver.class);
+        notificationIntent.putExtra("query", query);
+        notificationIntent.putExtra("filterQuery", filterQuery);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Calendar mStartTime = Calendar.getInstance();
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, mStartTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+
+        Log.d(TAG, "startAlarmReceiver: started");
+    }
+
+    
+    // Cancel notification
+    private void cancelAlarmReceiver() {
+
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        Intent notificationIntent = new Intent(this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager.cancel(pendingIntent);
+        Toast.makeText(this, "The notifications system has been cancelled.", Toast.LENGTH_LONG).show();
+        
+        Log.d(TAG, "cancelAlarmReceiver: cancelled");
     }
 }
