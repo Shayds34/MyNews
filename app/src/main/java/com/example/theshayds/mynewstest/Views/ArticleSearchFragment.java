@@ -21,8 +21,6 @@ import com.example.theshayds.mynewstest.Utils.DateServices;
 import com.example.theshayds.mynewstest.Utils.NetworkStatus;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
@@ -140,16 +138,8 @@ public class ArticleSearchFragment extends Fragment {
             if (mResult.getMultimedia().size() != 0){
                 news.setImageURL("https://static01.nyt.com/" + mResult.getMultimedia().get(0).getUrl());
             }
-            nyTimesNewsList.add(news);
 
-            // Sort list
-            Collections.sort(nyTimesNewsList, new Comparator<NYTimesNews>() {
-                @Override
-                public int compare(NYTimesNews o1, NYTimesNews o2) {
-                    return o1.getPublishedDate().compareTo(o2.getPublishedDate());
-                }
-            });
-            Collections.reverse(nyTimesNewsList);
+            nyTimesNewsList.add(news);
         }
     }
 
