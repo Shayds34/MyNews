@@ -76,9 +76,10 @@ public class ApiStreamsTest {
 
         // Query terms
         String mQuery = "Tesla Motors";
+        String mFilterQuery = "Technology";
 
         // Stream
-        Observable<ArticleSearch> mArticleSearchObservable = ApiStreams.streamArticlesParameters(mQuery);
+        Observable<ArticleSearch> mArticleSearchObservable = ApiStreams.streamArticlesParameters(mQuery, mFilterQuery);
 
         // Create Observer
         TestObserver<ArticleSearch> mTestObserver = new TestObserver<>();
