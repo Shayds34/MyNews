@@ -127,12 +127,11 @@ public class TopStoriesFragment extends Fragment {
                 news.setImageURL(mResult.getMultimedia().get(0).getUrl());
             }
 
-            // Sort list
-            // TODO remove
-            Collections.sort(nyTimesNewsList, (o1, o2) -> o1.getPublishedDate().compareTo(o2.getPublishedDate()));
-            Collections.reverse(nyTimesNewsList);
             nyTimesNewsList.add(news);
 
+            // Sort list
+            Collections.sort(nyTimesNewsList, (o1, o2) -> o1.getPublishedDate().compareTo(o2.getPublishedDate()));
+            Collections.reverse(nyTimesNewsList);
         }
     }
 

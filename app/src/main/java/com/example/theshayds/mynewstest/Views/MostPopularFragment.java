@@ -22,7 +22,6 @@ import com.example.theshayds.mynewstest.Utils.NetworkStatus;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
@@ -129,15 +128,11 @@ public class MostPopularFragment extends Fragment {
                 news.setImageURL(mResult.getMedia().get(0).getMediaMetadata().get(0).getUrl());
             }
 
-            // Sort list
-            Collections.sort(nyTimesNewsList, new Comparator<NYTimesNews>() {
-                @Override
-                public int compare(NYTimesNews o1, NYTimesNews o2) {
-                    return o1.getPublishedDate().compareTo(o2.getPublishedDate());
-                }
-            });
-            Collections.reverse(nyTimesNewsList);
             nyTimesNewsList.add(news);
+
+            // Sort list
+            Collections.sort(nyTimesNewsList, (o1, o2) -> o1.getPublishedDate().compareTo(o2.getPublishedDate()));
+            Collections.reverse(nyTimesNewsList);
         }
     }
 

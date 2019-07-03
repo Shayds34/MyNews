@@ -14,20 +14,6 @@ import retrofit2.http.Query;
 
 public interface ApiServices {
 
-    // ---------------------------------------------------------------------------------------------
-    // Full API URL for TOP STORIES
-    // https://api.nytimes.com/svc/topstories/v2/home.json?api-key=6sY6IUCABxIDivZZqpoyO2VSwA6oJxOO
-
-    // Full API URL for MOST POPULAR
-    // https://api.nytimes.com/svc/mostpopular/v2/mostemailed/all-sections/30.json?api-key=6sY6IUCABxIDivZZqpoyO2VSwA6oJxOO
-    // New API URL ?
-    // https://api.nytimes.com/svc/mostpopular/v2/viewed/7.json?api-key
-
-    // Full API URL for ARTICLE SEARCH
-    // https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=6sY6IUCABxIDivZZqpoyO2VSwA6oJxOO&q=sport
-    // ---------------------------------------------------------------------------------------------
-
-
     // API Request for "Top Stories" tab
     @GET("svc/topstories/v2/home.json?sort=newest")
         Observable<TopStories> getTopStories(@Query("api-key") String apiKey);
@@ -37,12 +23,16 @@ public interface ApiServices {
         Observable<MostPopular> getMostPopular(@Query("api-key") String apiKey);
 
     // API Request for "Arts" tab
-    @GET("svc/search/v2/articlesearch.json?sort=newest&api-key=6sY6IUCABxIDivZZqpoyO2VSwA6oJxOO&q=arts")
-        Observable<ArticleSearch> getArticleSearch();
+    @GET("svc/search/v2/articlesearch.json?sort=newest&q=arts")
+        Observable<ArticleSearch> getArticleSearch(@Query("api-key") String apiKey);
 
-    // API Request for "SearchActivity" and "NewsListActivity"
+    // API Request for "SearchActivity", "NewsListActivity" and "NotificationActivity"
     @GET("svc/search/v2/articlesearch.json?sort=newest")
-        Observable<ArticleSearch> getAllSearchedArticles(@Query("q") String query, @Query("api-key") String apiKey);
+        Observable<ArticleSearch> getAllSearchedArticles(@Query("q") String query, @Query("fq") String filterQuery, @Query("api-key") String apiKey);
+
+    // API Request for "SearchActivity", "NewsListActivity" and "NotificationActivity" using a begin/end date
+    @GET("svc/search/v2/articlesearch.json?sort=newest")
+    Observable<ArticleSearch> getAllSearchedArticlesWithDate(@Query("q") String query, @Query("fq") String filterQuery, @Query("begin_date") String beginDate, @Query("end_date") String endDate, @Query("api-key") String apiKey);
 
 
     // Retrofit builder with New York Times base URL

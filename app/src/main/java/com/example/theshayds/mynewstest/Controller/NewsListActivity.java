@@ -11,15 +11,18 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+
 import com.example.theshayds.mynewstest.Models.ArticleSearch;
 import com.example.theshayds.mynewstest.Models.NYTimesNews;
 import com.example.theshayds.mynewstest.R;
 import com.example.theshayds.mynewstest.Utils.ApiStreams;
+import com.example.theshayds.mynewstest.Utils.ArticleAdapter;
 import com.example.theshayds.mynewstest.Utils.DateServices;
 import com.example.theshayds.mynewstest.Utils.NetworkStatus;
-import com.example.theshayds.mynewstest.Utils.ArticleAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
@@ -64,7 +67,6 @@ public class NewsListActivity extends AppCompatActivity{
         // Setup RecyclerView
         this.configureRecyclerView();
 
-
         // Checking Network Status
         if (NetworkStatus.getInstance(this).isOnline()) {
             this.retrofitRequestArticleSearch();
@@ -79,25 +81,55 @@ public class NewsListActivity extends AppCompatActivity{
 
         // Get parameters from getStringExtra() to search articles
         Intent mIntent = getIntent();
-        final String mQuery = mIntent.getStringExtra("query");
+        String mQuery = mIntent.getStringExtra("query");
+        String mFilterQuery = mIntent.getStringExtra("filterQuery");
 
-        disposable = ApiStreams.streamArticlesParameters(mQuery).subscribeWith(new DisposableObserver<ArticleSearch>() {
-            @Override
-            public void onNext(ArticleSearch article) {
-                createListArticleSearch(nyTimesNewsList, article);
-                adapter.notifyDataSetChanged();
-            }
+        // DateFormat to fill parameters requirements (has to be yyyyMMdd)
+        String mBeginDate = mIntent.getStringExtra("BeginDate");
+        String mEndDate = mIntent.getStringExtra("EndDate");
 
-            @Override
-            public void onError(Throwable e) {
-                Log.e(TAG, "ON ERROR " + Log.getStackTraceString(e));
-            }
+        if (mBeginDate == null && mEndDate == null) {
+            disposable = ApiStreams.streamArticlesParameters(mQuery, mFilterQuery).subscribeWith(new DisposableObserver<ArticleSearch>() {
+                @Override
+                public void onNext(ArticleSearch article) {
+                    createListArticleSearch(nyTimesNewsList, article);
+                    adapter.notifyDataSetChanged();
+                }
 
-            @Override
-            public void onComplete() {
-                Log.d(TAG, "ON COMPLETE");
-            }
-        });
+                @Override
+                public void onError(Throwable e) {
+                    Log.e(TAG, "ON ERROR " + Log.getStackTraceString(e));
+                }
+
+                @Override
+                public void onComplete() {
+                    Log.d(TAG, "stream with parameters ON COMPLETE");
+
+                }
+            });
+        } else {
+            // If a date is picked by user, format it.
+            String mBeginDateFormat = DateServices.dateFormatTer(mBeginDate);
+            String mEndDateFormat = DateServices.dateFormatTer(mEndDate);
+
+            disposable = ApiStreams.streamArticlesWithDate(mQuery, mFilterQuery, mBeginDateFormat, mEndDateFormat).subscribeWith(new DisposableObserver<ArticleSearch>() {
+                @Override
+                public void onNext(ArticleSearch article) {
+                    createListArticleSearch(nyTimesNewsList, article);
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Log.e(TAG, "ON ERROR " + Log.getStackTraceString(e));
+                }
+
+                @Override
+                public void onComplete() {
+                    Log.d(TAG, "stream with date ON COMPLETE");
+                }
+            });
+        }
     }
 
 
@@ -106,6 +138,7 @@ public class NewsListActivity extends AppCompatActivity{
 
         // For each result in all results we create a new News (NYTimesNews).
         for (ArticleSearch.Doc mResult : articleSearch.getResponse().getDocs()) {
+
             // Create a news
             NYTimesNews news = new NYTimesNews();
 
@@ -122,6 +155,7 @@ public class NewsListActivity extends AppCompatActivity{
             if (mResult.getMultimedia().size() != 0){
                 news.setImageURL("https://static01.nyt.com/" + mResult.getMultimedia().get(0).getUrl());
             }
+
             nyTimesNewsList.add(news);
         }
     }

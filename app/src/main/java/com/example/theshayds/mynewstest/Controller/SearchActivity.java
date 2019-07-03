@@ -12,8 +12,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.theshayds.mynewstest.R;
+import com.example.theshayds.mynewstest.Utils.DateServices;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,7 +27,9 @@ public class SearchActivity extends AppCompatActivity {
 
     EditText mSearchTerm;
     CheckBox mArts, mEntrepreneurs, mBusiness, mPolitics, mTravel, mSports;
-    Button mSearch;
+    Button mSearchButton;
+
+    String mDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +60,7 @@ public class SearchActivity extends AppCompatActivity {
         mTravel = findViewById(R.id.checkbox_travel);
         mSports = findViewById(R.id.checkbox_sports);
 
-        mSearch = findViewById(R.id.button_search);
+        mSearchButton = findViewById(R.id.button_search);
 
         final Toolbar mToolbar = findViewById(R.id.toolbar);
         mToolbar.setTitle("Search Articles");
@@ -68,18 +72,28 @@ public class SearchActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
+        Intent mIntent = new Intent(SearchActivity.this, NewsListActivity.class);
+
         // Default Date on the Begin Date Spinner
-        mBeginDateButton.setText(dayOfMonth + "/" + month  + "/" + year);
+        mDate = (String) TextUtils.concat(DateServices.addDigitToDate(dayOfMonth) + "/" + DateServices.addDigitToDate(month + 1)  + "/" + year);
+        mBeginDateButton.setText(mDate);
 
         mBeginDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 DatePickerDialog datePickerDialog = new DatePickerDialog(SearchActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                mBeginDateButton.setText(day +"/" + (month + 1) + "/" + year);
+
+                                String stringYear = String.valueOf(year);
+                                String stringMonth = DateServices.addDigitToDate(month + 1);
+                                String stringDay = DateServices.addDigitToDate(day);
+
+                                mDate = (String) TextUtils.concat(stringDay + "/" + stringMonth + "/" + stringYear);
+                                mBeginDateButton.setText(mDate);
+
+                                mIntent.putExtra("BeginDate", mBeginDateButton.getText());
                             }
                         }, year,month,dayOfMonth);
                 datePickerDialog.show();
@@ -89,56 +103,65 @@ public class SearchActivity extends AppCompatActivity {
         mEndDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 DatePickerDialog datePickerDialog = new DatePickerDialog(SearchActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                mEndDateButton.setText(day +"/" + (month + 1) + "/" + year);
+
+                                String stringYear = String.valueOf(year);
+                                String stringMonth = DateServices.addDigitToDate(month + 1);
+                                String stringDay = DateServices.addDigitToDate(day);
+
+                                mDate = (String) TextUtils.concat(stringDay + "/" + stringMonth + "/" + stringYear);
+                                mEndDateButton.setText(mDate);
+
+                                mIntent.putExtra("EndDate", mEndDateButton.getText());
                             }
                         }, year,month,dayOfMonth);
                 datePickerDialog.show();
             }
         });
 
-        // TODO : add If mSearchQuery.isEmpty() ?
-        // TODO : at least one isChecked()
-        mSearch.setOnClickListener(v -> {
+        mSearchButton.setOnClickListener(v -> {
 
             mSearchTerm = findViewById(R.id.search_query_text);
-
             ArrayList<String> mQueries = new ArrayList<>();
             String mSearchQuery = mSearchTerm.getText().toString();
 
-            if(!mSearchQuery.equals("")){
-                mQueries.add(mSearchQuery);
-            }
+            if (mSearchQuery.isEmpty()){
 
-            if(mArts.isChecked()){
-                mQueries.add("arts");
-            }
-            if(mEntrepreneurs.isChecked()){
-                mQueries.add("entrepreneurs");
-            }
-            if(mBusiness.isChecked()){
-                mQueries.add("business");
-            }
-            if(mPolitics.isChecked()){
-                mQueries.add("politics");
-            }
-            if(mTravel.isChecked()){
-                mQueries.add("travel");
-            }
-            if(mSports.isChecked()){
-                mQueries.add("sports");
-            }
+                Toast.makeText(this, "You have to enter a search query term and at least one checkbox.", Toast.LENGTH_SHORT).show();
 
-            // Separate queries with "&" symbol
-            String result = TextUtils.join("&", mQueries);
+            } else if ((mArts.isChecked() || mEntrepreneurs.isChecked() || mBusiness.isChecked() || mPolitics.isChecked() || mTravel.isChecked() || mSports.isChecked())) {
 
-            Intent mIntent = new Intent(SearchActivity.this, NewsListActivity.class);
-            mIntent.putExtra("query", result);
-            startActivity(mIntent);
+                if (mArts.isChecked()) {
+                    mQueries.add("arts");
+                }
+                if (mEntrepreneurs.isChecked()) {
+                    mQueries.add("entrepreneurs");
+                }
+                if (mBusiness.isChecked()) {
+                    mQueries.add("business");
+                }
+                if (mPolitics.isChecked()) {
+                    mQueries.add("politics");
+                }
+                if (mTravel.isChecked()) {
+                    mQueries.add("travel");
+                }
+                if (mSports.isChecked()) {
+                    mQueries.add("sports");
+                }
+
+                // Separate queries with empty space " ".
+                String result = TextUtils.join(" ", mQueries);
+
+                mIntent.putExtra("query", mSearchQuery);
+                mIntent.putExtra("filterQuery", result);
+                startActivity(mIntent);
+            } else {
+                Toast.makeText(this, "You have to enter a search query term and at least one checkbox.", Toast.LENGTH_LONG).show();
+            }
         });
     }
 
