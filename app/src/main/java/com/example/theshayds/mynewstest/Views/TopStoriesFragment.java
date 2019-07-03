@@ -20,6 +20,7 @@ import com.example.theshayds.mynewstest.Utils.ArticleAdapter;
 import com.example.theshayds.mynewstest.Utils.DateServices;
 import com.example.theshayds.mynewstest.Utils.NetworkStatus;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import io.reactivex.disposables.Disposable;
@@ -126,7 +127,12 @@ public class TopStoriesFragment extends Fragment {
                 news.setImageURL(mResult.getMultimedia().get(0).getUrl());
             }
 
+            // Sort list
+            // TODO remove
+            Collections.sort(nyTimesNewsList, (o1, o2) -> o1.getPublishedDate().compareTo(o2.getPublishedDate()));
+            Collections.reverse(nyTimesNewsList);
             nyTimesNewsList.add(news);
+
         }
     }
 
