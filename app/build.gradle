@@ -7,9 +7,16 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest'){
     reports {
         xml.enabled = true
         html.enabled = true
+        html.destination file ("${buildDir}/jacocoHtml")
     }
 
-    def fileFilter = ['**/R.class', '**/R$.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+    def fileFilter = ['**/R.class',
+                      '**/R$.class',
+                      '**/BuildConfig.*',
+                      '**/Manifest*.*',
+                      '**/*Test*.*',
+                      'android/**/*.*']
+
     def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter)
     def mainSrc = "${project.projectDir}/src/main/java"
 
@@ -18,9 +25,18 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest'){
     executionData = files("${buildDir}/jacoco/testDebugUnitTest.exec")
 }
 
+jacoco {
+    toolVersion = "0.8.1"
+}
+
+tasks.withType(Test){
+    jacoco.includeNoLocationClasses = true
+}
+
 android {
 
     compileSdkVersion 28
+    buildToolsVersion = '28.0.3'
     defaultConfig {
         applicationId "com.example.theshayds.mynewstest"
         minSdkVersion 19
@@ -46,7 +62,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildToolsVersion = '28.0.3'
 }
 
 dependencies {

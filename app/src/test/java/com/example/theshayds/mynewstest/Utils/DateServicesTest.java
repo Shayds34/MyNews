@@ -23,4 +23,25 @@ public class DateServicesTest {
 
         assertEquals( expectedDate, DateServices.dateFormatBis(mTestDate));
     }
+
+    @Test
+    public void dateFormatTer(){
+
+        String mTestDate = "07/07/2019";
+        String expectedDate = "20190707";
+
+        assertEquals ( expectedDate, DateServices.dateFormatTer(mTestDate));
+    }
+
+    @Test
+    public void addDigitToDate(){
+
+        int mTestDay = 3;
+        String expectedDay = "03";
+        assertEquals( expectedDay, DateServices.addDigitToDate(mTestDay));
+
+        int mTestMonth = 6;
+        String expectedMonth = "06";
+        assertEquals(expectedMonth, DateServices.addDigitToDate(mTestMonth));
+    }
 }
