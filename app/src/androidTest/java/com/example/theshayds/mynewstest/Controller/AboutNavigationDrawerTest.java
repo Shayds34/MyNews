@@ -50,8 +50,7 @@ public class AboutNavigationDrawerTest {
 
         ViewInteraction navigationMenuItemView = onView(
                 allOf(childAtPosition(
-                        allOf(withId(R.id.design_navigation_view),
-                                childAtPosition(
+                        allOf(childAtPosition(
                                         withId(R.id.nav_view),
                                         0)),
                         9),
