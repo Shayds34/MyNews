@@ -44,3 +44,7 @@ before_script:
 script:
   - android list target
   - ./gradlew connectedAndroidTest --warning-mode=all --stacktrace
+  - ./gradlew test jacocoTestReport coveralls
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
