@@ -3,8 +3,6 @@ package com.example.theshayds.mynewstest.Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class NYTimesNews {
 
     @SerializedName("title")
@@ -22,16 +20,6 @@ public class NYTimesNews {
     @SerializedName("url")
     @Expose
     private String imageURL;
-
-    private List<NYTimesNews> nyTimesNewsList;
-
-    public List<NYTimesNews> getNyTimesNewsList() {
-        return nyTimesNewsList;
-    }
-
-    public void setNyTimesNewsList(List<NYTimesNews> nyTimesNewsList) {
-        this.nyTimesNewsList = nyTimesNewsList;
-    }
 
     public String getTitle() {
         return title;
