@@ -21,7 +21,7 @@ public class NetworkStatus {
             ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
             NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
-            isConnected = mNetworkInfo != null && mNetworkInfo.isAvailable() && mNetworkInfo.isConnected();
+            isConnected = mNetworkInfo != null && mNetworkInfo.isAvailable() && mNetworkInfo.isConnectedOrConnecting();
 
             return isConnected;
 
