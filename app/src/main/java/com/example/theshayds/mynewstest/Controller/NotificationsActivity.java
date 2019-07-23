@@ -63,7 +63,6 @@ public class NotificationsActivity extends AppCompatActivity {
         }
 
 
-
         // Create switch events
         mNotificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked) {
@@ -141,6 +140,7 @@ public class NotificationsActivity extends AppCompatActivity {
     // Start alarmReceiver
     private void startAlarmReceiver(String query, String filterQuery){
 
+        // Build new alarmManager using ALARM_SERVICE
         Intent notificationIntent = new Intent(this, AlarmReceiver.class);
         notificationIntent.putExtra("query", query);
         notificationIntent.putExtra("filterQuery", filterQuery);
@@ -150,6 +150,7 @@ public class NotificationsActivity extends AppCompatActivity {
         Calendar mStartTime = Calendar.getInstance();
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, mStartTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        Toast.makeText(this, "The notifications system has been started (24 hours delay).", Toast.LENGTH_LONG).show();
 
         Log.d(TAG, "startAlarmReceiver: started");
     }
@@ -158,6 +159,7 @@ public class NotificationsActivity extends AppCompatActivity {
     // Cancel notification
     private void cancelAlarmReceiver() {
 
+        // Get current alarmManager and cancel it.
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent notificationIntent = new Intent(this, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);

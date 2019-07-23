@@ -31,18 +31,19 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "onReceive.");
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences("toggle_state", MODE_PRIVATE);
+        // Fetch data from user's SharedPreferences
+        SharedPreferences sharedPreferences = context.getSharedPreferences("notification_queries", MODE_PRIVATE);
 
-
+        // Get latest queries entered by the user when setting up notifications
         String mQuery = sharedPreferences.getString("notificationQuery", intent.getExtras().getString("query"));
         String mFilterQuery = sharedPreferences.getString("notificationFilterQuery", intent.getExtras().getString("filterQuery"));
 
-        Log.d(TAG, "Query is " + mQuery + " FilterQuery is " + mFilterQuery);
-
+        // Retrofit request using notification queries parameters
         disposable = ApiStreams.streamArticlesParameters(mQuery, mFilterQuery).subscribeWith(new DisposableObserver<ArticleSearch>() {
             @Override
             public void onNext(ArticleSearch articleSearch) {
-                Log.d(TAG, "onNext: number of articles " + articleSearch.getResponse().getDocs().size());
+
+                // Number of new articles found
                 numberOfNewArticles = articleSearch.getResponse().getDocs().size();
             }
 
@@ -55,6 +56,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             public void onComplete() {
                 Log.d(TAG, "onComplete " + numberOfNewArticles);
 
+                // Build notification with Title and Content
                 Notification.Builder builder = new Notification.Builder(context);
                 Notification notification = builder.setSmallIcon(R.mipmap.ic_ny_time)
                         .setContentTitle("MyNews")
@@ -62,6 +64,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                         .setAutoCancel(true)
                         .build();
 
+                // Show notification
                 NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 mNotificationManager.notify(NOTIFICATION_ID, notification);
 
