@@ -73,14 +73,70 @@ public class ApiStreamsTest {
     }
 
     @Test
-    public void streamArticleSearch() {
+    public void streamArticleSearchArts() {
+
+        // Stream
+        Observable<ArticleSearch> mArticleSearchObservable = ApiStreams.streamArticleSearch();
+
+        // Create Observer
+        TestObserver<ArticleSearch> mTestObserver = new TestObserver<>();
+
+        // Create Observable
+        mArticleSearchObservable.subscribeWith(mTestObserver)
+                .assertNoErrors()
+                .assertNoTimeout()
+                .awaitTerminalEvent();
+
+        // Get List
+        ArticleSearch mArticleSearch = mTestObserver.values().get(0);
+
+        // Check if status is OK
+        assertEquals("OK", mArticleSearch.getStatus());
+
+        // Check if results exist
+        assertNotNull(mArticleSearch.getResponse());
+    }
+
+    @Test
+    public void streamArticleSearchWithParameters() {
 
         // Query terms
         String mQuery = "Tesla Motors";
-        String mFilterQuery = "Technology";
+        String mFilterQuery = "Business";
 
         // Stream
         Observable<ArticleSearch> mArticleSearchObservable = ApiStreams.streamArticlesParameters(mQuery, mFilterQuery);
+
+        // Create Observer
+        TestObserver<ArticleSearch> mTestObserver = new TestObserver<>();
+
+        // Create Observable
+        mArticleSearchObservable.subscribeWith(mTestObserver)
+                .assertNoErrors()
+                .assertNoTimeout()
+                .awaitTerminalEvent();
+
+        // Get List
+        ArticleSearch mArticleSearch = mTestObserver.values().get(0);
+
+        // Check if status is OK
+        assertEquals("OK", mArticleSearch.getStatus());
+
+        // Check if results exist
+        assertNotNull(mArticleSearch.getResponse());
+    }
+
+    @Test
+    public void streamArticleSearchWithParametersAndDate() {
+
+        // Query terms
+        String mQuery = "Tesla Motors";
+        String mFilterQuery = "Business";
+        String mBeginDate = "20190722";
+        String mEndDate = "20190723";
+
+        // Stream
+        Observable<ArticleSearch> mArticleSearchObservable = ApiStreams.streamArticlesWithDate(mQuery, mFilterQuery, mBeginDate, mEndDate);
 
         // Create Observer
         TestObserver<ArticleSearch> mTestObserver = new TestObserver<>();
