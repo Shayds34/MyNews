@@ -62,6 +62,8 @@ public class NotificationsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
+
+
         // Create switch events
         mNotificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked) {
@@ -103,6 +105,10 @@ public class NotificationsActivity extends AppCompatActivity {
 
                     // Separate queries with empty space " ".
                     String result = TextUtils.join(" ", mQueries);
+
+                    mEditor = getSharedPreferences("notification_queries", MODE_PRIVATE).edit();
+                    mEditor.putString("notificationQuery", mSearchQuery);
+                    mEditor.putString("notificationFilterQuery", result);
 
                     // Start Notification
                     startAlarmReceiver(mSearchQuery, result);

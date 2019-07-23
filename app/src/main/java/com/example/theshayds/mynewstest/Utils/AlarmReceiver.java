@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.theshayds.mynewstest.Models.ArticleSearch;
@@ -14,6 +15,8 @@ import java.util.Arrays;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class AlarmReceiver extends BroadcastReceiver {
@@ -28,8 +31,11 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "onReceive.");
 
-        String mQuery = intent.getExtras().getString("query");
-        String mFilterQuery = intent.getExtras().getString("filterQuery");
+        SharedPreferences sharedPreferences = context.getSharedPreferences("toggle_state", MODE_PRIVATE);
+
+
+        String mQuery = sharedPreferences.getString("notificationQuery", intent.getExtras().getString("query"));
+        String mFilterQuery = sharedPreferences.getString("notificationFilterQuery", intent.getExtras().getString("filterQuery"));
 
         Log.d(TAG, "Query is " + mQuery + " FilterQuery is " + mFilterQuery);
 
