@@ -28,6 +28,8 @@ D’ici, l’utilisateur va pouvoir accéder aux trois listes d’articles de l�
 
 Les boutons « Help » et « About », quant à eux, ouvrent une fenêtre expliquant en quelques mots l’intérêt de l’application et le cadre dans lequel elle a été réalisée.
 
+![navigationdrawer](https://i.goopics.net/mbkrO.png)
+
 ### II.3 Choix de la liste des articles
 L’utilisateur a le choix entre trois onglets d’articles (TabLayout). Le choix se fait en cliquant directement sur les onglets. Ou à l’aide d’un ViewPager en faisant glisser le doigt sur l’écran : de droite à gauche pour passer à l’onglet suivant et de gauche à droite pour revenir à l’onglet précédant.
 
@@ -36,6 +38,8 @@ L’utilisateur a le choix entre trois onglets d’articles (TabLayout). Le choi
 ### II.4 Le choix d’un article
 Le choix d’un article se fait par une pression sur la ligne d’un article. Une nouvelle activité sera créée où une WebView affichera l’intégralité de l’article du New York Times.
 
+![tablayout](https://i.goopics.net/VG0XA.png)
+
 ### II.5 L’écran de recherche
 Le menu de recherche est disponible par le biais du bouton « Loupe ». Le menu se présente sous la forme d’une nouvelle activité où l’utilisateur peut choisir les termes de sa recherche.
 
@@ -43,10 +47,14 @@ Un EditText est présent pour rechercher un terme personnalisé. Des CheckBoxes 
 
 Le choix du filtre par date se fait à l’aide d’un Date Picker). Ce choix est facultatif pour l’utilisateur, il peut décider de laisser ces champs comme ils le sont. Le champ « Begin Date » sera toujours réglé sur la date du jour, mais n’a pas d’incidence si la date de fin « End Date » n’est pas choisie.
 
+![search](https://i.goopics.net/9Oaxy.png)
+
 ### II.6 Le menu de la barre d’outils
 Un menu est disponible sur la barre d’outils. L’accès se fait grâce au bouton représenté par les trois points.
 
 Ce menu permet d’accéder aux paramètres de notifications, à la fiche Help ainsi qu’à la fiche About.
+
+![toolbarmenu](https://i.goopics.net/N29kR.png)
 
 ### II.7 Le menu de notifications
 Le menu de notifications permet à l’utilisateur de pouvoir paramétrer les notifications reçues.
@@ -55,5 +63,9 @@ Il pourra choisir un terme à entrer dans l’EditText ainsi que des sujets dans
 
 Le résultat de la recherche d’articles par notification sera disponible chaque jour (24 heures), à l’heure où la notification a été paramétrée. Elle se présentera sous forme d’un bandeau contenant le nombre d’articles correspondants aux critères choisis.
 
+![notifications](https://i.goopics.net/obajo.png)
+
 ### II.8 Informations supplémentaires
 Les menus de la barre d’outils « Help » et « About » donnent tous les deux des informations concernant l’application. Le menu « Help » donne une information sur l’utilité de l’application. Le menu « About » donne quant à lui le cadre dans lequel l’application est développée.
+
+![informations](https://i.goopics.net/xXNaR.png)
