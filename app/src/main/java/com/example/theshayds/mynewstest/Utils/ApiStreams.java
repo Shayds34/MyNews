@@ -11,7 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class ApiStreams {
-    private static final String API_KEY = "6sY6IUCABxIDivZZqpoyO2VSwA6oJxOO";
+    private static final String API_KEY = "YOUR_API_HERE"; // DELETE API KEY
 
     // Stream to populate TopStories' fragment list.
     public static Observable<TopStories> streamTopStories(){
